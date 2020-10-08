@@ -1,21 +1,23 @@
-import {Date} from 'core-js';
 import { createEntity } from './units/create-entity.js';
 import { batchDelete } from './units/batch-delete.js';
 import { updateAttributes } from './units/update-attributes.js';
+import { retrieveTemporalEvolution } from './units/retrieve-temporal-evolution.js';
+import { group } from 'k6';
 
-var valuesCount = 1;
+var valuesCount = 30000;
 var entityId = "urn:ngsi-ld:Entity:01";
+var now = new Date();
 
 export let options = {
+    duration: '30m',
     thresholds: {
-      'http_req_duration': ['avg<50']  // threshold on a the average request duration
+      'update_attributes_duration': ['avg<600'],  // threshold on a the average request duration
+      'retrieve_temporal_evolution_duration': ['avg<600']  // threshold on a the average request duration
     }
 };
 
-
 export function setup() {
-    
-    var timestamp = Date.now();
+    var timestamp = now;
     //first create the entity holding the temporal property
     let entityWithTemporalProp = { 
         id: entityId,
@@ -28,12 +30,11 @@ export function setup() {
     }; 
     createEntity(entityWithTemporalProp);
 
-    
     //prepare data for sending temporal values
     let jsonArray = new Array();
 
     for(var i = 0; i < valuesCount; i++){
-        timestamp.setSeconds(t.getSeconds() + 1);
+        timestamp.setSeconds(timestamp.getSeconds() + 1);
         jsonArray.push({ 
             variable: {
                 type: 'Property',
@@ -47,9 +48,16 @@ export function setup() {
 }
 
 export default function(data) {
-    for(var i = 0; i < data.length; i++) {
-        updateAttributes(entityId, data[i]);
-    }  
+    group('load on temporal values', function () {
+        group(`update temporal value for each second (${valuesCount} values)`, function () {
+            for(var i = 0; i < data.length; i++) {
+                updateAttributes(entityId, data[i]);
+            }
+        });
+        group(`retrieve all temporal values (${valuesCount} values)`, function () {
+            retrieveTemporalEvolution(entityId, now.toISOString(), 'variable');
+        });  
+    });
 }
 
 export function teardown(data) {

@@ -1,13 +1,11 @@
 import { createEntity } from './units/create-entity.js';
 import { batchDelete } from './units/batch-delete.js';
-import "core-js";
-
 
 var entitiesCount = 100;
 
 export let options = {
     thresholds: {
-      'create_entity_duration': ['avg<100']  // threshold on a the average request duration
+      'create_entity_duration': ['avg<100']  // threshold on the average request duration
     }
 };
 

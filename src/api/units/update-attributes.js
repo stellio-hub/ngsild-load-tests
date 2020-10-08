@@ -11,9 +11,9 @@ export function updateAttributes(entityId, body) {
           'Content-Type': 'application/json'  
         }
     };
-    var response = http.patch(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/entities/${entityId}`, JSON.stringify(body), httpParams);
+    var response = http.patch(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/entities/${entityId}/attrs`, JSON.stringify(body), httpParams);
     check(response, {
-        'update on attributes is successful': response => response.status === 200
+        'update on attributes is successful': response => response.status === 204
     });
     durationTrend.add(response.timings.duration);
 }
