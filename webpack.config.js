@@ -5,7 +5,7 @@ module.exports = {
   entry: {
     batchCreateEntities: './src/api/scenario-batch-create-entities.js',
     createEntities: './src/api/scenario-create-entities.js',
-    loadOnTemporal: './src/api/scenario-load-on-temporal.js',
+    loadOnOnePropTemporal: './src/api/scenario-load-on-one-temporal-prop.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
