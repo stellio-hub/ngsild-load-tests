@@ -9,10 +9,12 @@ var entityId = "urn:ngsi-ld:Entity:01";
 var now = new Date();
 
 export let options = {
-    duration: '30m',
+    duration: '50m',
+    iterations: 1,
+    vus: 1,
     thresholds: {
-      'update_attributes_duration': ['avg<600'],  // threshold on a the average request duration
-      'retrieve_temporal_evolution_duration': ['avg<600']  // threshold on a the average request duration
+      'update_attributes_duration': ['avg<100'],  // threshold on a the average request duration
+      'retrieve_temporal_evolution_duration': ['avg<1500']  // threshold on a the average request duration
     }
 };
 
