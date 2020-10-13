@@ -23,14 +23,8 @@ export function setup() {
     var timestamp = now;
     //first create the entity holding the temporal properties
     let entityWithTemporalProps = { 
-        id: entityId,
-        type: 'Entity',
-        var1: {
-            type: 'Property',
-            value: 0.0,
-            observedAt: timestamp.toISOString()
-        }
-        
+        id: `${entityId}`,
+        type: 'Entity'
     }; 
     for(var i = 1; i <= propertiesCount; i++){
         entityWithTemporalProps['var' + i] = 
@@ -52,7 +46,7 @@ export function setup() {
         for (var j = 1; j < propertiesCount; j++){
             varsFragment['var' + j] = {
                 type: 'Property',
-                value: 0.0,
+                value: Math.random(),
                 observedAt: timestamp.toISOString()
             }
         }

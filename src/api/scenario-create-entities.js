@@ -1,7 +1,6 @@
 import { createEntity } from './units/create-entity.js';
-import { batchDelete } from './units/batch-delete.js';
-
-var entitiesCount = 100;
+import { batchDeleteEntities } from './units/batch-delete-entities.js';
+import { getEntities } from './units/get-entities.js';
 
 export let options = {
     thresholds: {
@@ -9,26 +8,12 @@ export let options = {
     }
 };
 
-export function setup() {
-    var jsonArray = new Array();
-    for(var i = 1; i <= entitiesCount; i++){
-        jsonArray.push({ id: `urn:ngsi-ld:Entity:${i}`, type: "Entity" });
-    }
-
-    return Object.assign([], jsonArray);
+export default function() {
+    var entity = { id: `urn:ngsi-ld:Entity:${__VU}_${__ITER}`, type: "Entity" };
+    createEntity(entity);
 }
 
-export default function(data) {
-    for(var i = 0; i < data.length; i++) {
-        createEntity(data[i]);
-    }  
-}
-
-export function teardown(data) {
-    var entityIds = new Array();
-    for(var i = 0; i < data.length; i++) {
-        entityIds.push(data[i].id);
-    }
-
-    batchDelete(entityIds);
+export function teardown() {
+    var entityIds = getEntities("#.id");
+    batchDeleteEntities(entityIds);
 }

@@ -8,6 +8,7 @@ export function createEntity(body) {
     let payload = body || { id: "urn:ngsi-ld:Entity:01", type: "Entity" };
   
     var httpParams = {
+        timeout: 18000000, //5min
         headers: {
           'Content-Type': 'application/json',
           'Link': '<http://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
@@ -18,6 +19,9 @@ export function createEntity(body) {
     check(response, {
         'creation of entity is successful': response => response.status === 201
     });
+    if(response.status !== 201){
+        console.log('ERROR : ' + response.body);
+    }
     durationTrend.add(response.timings.duration);
 }
 

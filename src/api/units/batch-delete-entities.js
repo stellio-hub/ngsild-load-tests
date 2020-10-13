@@ -4,9 +4,10 @@ import { Trend } from 'k6/metrics';
 
 let durationTrend = new Trend('batch_delete_duration', true);
 
-export function batchDelete(body) {
+export function batchDeleteEntities(body) {
    
     var httpParams = {
+        timeout: 18000000, //5min
         headers: {
           'Content-Type': 'application/json'  
         }
@@ -15,5 +16,8 @@ export function batchDelete(body) {
     check(response, {
         'batch delete is successful': response => response.status === 200
     });
+    if(response.status !== 200){
+        console.log('ERROR : ' + response.body);
+    }
     durationTrend.add(response.timings.duration);
 }

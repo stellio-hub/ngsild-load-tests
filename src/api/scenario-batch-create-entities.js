@@ -1,5 +1,6 @@
-import { batchCreate } from './units/batch-create.js';
-import { batchDelete } from './units/batch-delete.js';
+import { batchCreateEntities } from './units/batch-create-entities.js';
+import { batchDeleteEntities } from './units/batch-delete-entities.js';
+import { getEntities } from './units/get-entities.js';
 
 
 var entitiesCount = 100;
@@ -20,14 +21,10 @@ export function setup() {
 }
 
 export default function(data) {
-    batchCreate(data);
+    batchCreateEntities(data);
 }
 
-export function teardown(data) {
-    var entityIds = new Array();
-    for(var i = 0; i < data.length; i++) {
-        entityIds.push(data[i].id);
-    }
-
-    batchDelete(entityIds);
+export function teardown() {
+    var entityIds = getEntities("#.id");
+    batchDeleteEntities(entityIds);
 }

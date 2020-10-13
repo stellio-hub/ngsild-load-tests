@@ -7,6 +7,7 @@ let durationTrend = new Trend('update_attributes_duration', true);
 export function updateAttributes(entityId, body) {
    
     var httpParams = {
+        timeout: 18000000, //5min
         headers: {
           'Content-Type': 'application/json'  
         }
@@ -15,5 +16,8 @@ export function updateAttributes(entityId, body) {
     check(response, {
         'update on attributes is successful': response => response.status === 204
     });
+    if(response.status !== 204){
+        console.log('ERROR : ' + response.body);
+    }
     durationTrend.add(response.timings.duration);
 }

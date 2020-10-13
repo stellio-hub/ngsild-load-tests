@@ -37,8 +37,14 @@ The bundled scripts are generated in the dist folder.
 For the scripts to run the env variable STELLIO_HOSTNAME needs to be set (here localhost:8080), and we set the path to the summary export file
 
 ```sh
-k6 run -e STELLIO_HOSTNAME=localhost:8080 src/api/scenario-create-entities.js --summary-export=dist/export.json
+k6 run -e STELLIO_HOSTNAME=localhost:8080 src/api/scenario-batch-create-entities.js --summary-export=dist/export.json
 ```
+Some scripts can be run with vus and iterations arguments, such as scenario-create-entities.js : 
+
+```sh
+k6 run -e STELLIO_HOSTNAME=localhost:8080 src/api/scenario-create-entities.js --summary-export=dist/export.json --vus 10 --iterations 100
+```
+
 
 This command run the batchCreateEntities bundled script.
 

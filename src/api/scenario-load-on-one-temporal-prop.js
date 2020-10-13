@@ -1,8 +1,8 @@
 import { createEntity } from './units/create-entity.js';
-import { batchDelete } from './units/batch-delete.js';
+import { batchDeleteEntities } from './units/batch-delete-entities.js';
 import { updateAttributes } from './units/update-attributes.js';
 import { retrieveTemporalEvolution } from './units/retrieve-temporal-evolution.js';
-import { group } from 'k6';
+import { group, sleep } from 'k6';
 
 var valuesCount = 30000;
 var entityId = "urn:ngsi-ld:Entity:01";
@@ -45,24 +45,25 @@ export function setup() {
             }
         });
     }
-
+    
     return Object.assign([], jsonArray);
 }
 
 export default function(data) {
     group('load on temporal values', function () {
-        group(`update temporal value for each second (${valuesCount} values)`, function () {
+        group(`update temporal value for each second (${data.length} values)`, function () {
             for(var i = 0; i < data.length; i++) {
                 updateAttributes(entityId, data[i]);
             }
         });
-        group(`retrieve all temporal values (${valuesCount} values)`, function () {
+
+        group(`retrieve all temporal values (${data.length} values)`, function () {
             retrieveTemporalEvolution(entityId, now.toISOString(), 'variable');
-        });  
+        });
     });
 }
 
 export function teardown(data) {
     var entityIds = [entityId];
-    batchDelete(entityIds);
+    batchDeleteEntities(entityIds);
 }
