@@ -9,15 +9,6 @@ import { retrieveTemporalEvolutionLastN } from '../units/retrieve-temporal-evolu
 
 import { group, sleep } from 'k6';
 
-
-// export let options = {
-//     duration: '400m',
-//     thresholds: {
-//       'create_subscription_duration': ['avg<100'],  // threshold on the average request duration
-//       'retrieve_subscriptions_duration': ['avg<1500']  // threshold on the average request duration
-//     }
-// };
-
 export let options = {
     thresholds: {
         'create_subscription_duration': ['avg<100'],  // threshold on the average request duration
@@ -34,7 +25,41 @@ export let options = {
                 D:'1',
                 E:'1'
             }
+        },
+        ten: {
+            executor: 'shared-iterations',
+            maxDuration: '400m',   
+            env:{
+                A:'10',
+                B:'10',
+                C:'10',
+                D:'10',
+                E:'10'
+            }
+        },
+        hundred: {
+            executor: 'shared-iterations',
+            maxDuration: '400m',   
+            env:{
+                A:'100',
+                B:'100',
+                C:'100',
+                D:'100',
+                E:'100'
+            }
+        },
+        thousand: {
+            executor: 'shared-iterations',
+            maxDuration: '400m',   
+            env:{
+                A:'100',
+                B:'100',
+                C:'100',
+                D:'100',
+                E:'100'
+            }
         }
+
     }
 };
 
