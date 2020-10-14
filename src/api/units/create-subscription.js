@@ -12,7 +12,7 @@ export function createSubscription(body) {
           'Content-Type': 'application/json'  
         }
     };
-    console.log('BODY' + JSON.stringify(body));
+
     var response = http.post(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/subscriptions`, JSON.stringify(body), httpParams);
     check(response, {
         'create subscription is successful': response => response.status === 201

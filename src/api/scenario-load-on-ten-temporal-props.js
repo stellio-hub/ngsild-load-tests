@@ -26,7 +26,7 @@ export function setup() {
         id: `${entityId}`,
         type: 'Entity'
     }; 
-    for(var i = 1; i <= propertiesCount; i++){
+    for(var i = 0; i < propertiesCount; i++){
         entityWithTemporalProps['var' + i] = 
             {
                 type: 'Property',
@@ -43,7 +43,7 @@ export function setup() {
     for(var i = 0; i < valuesCount; i++){
         timestamp.setSeconds(timestamp.getSeconds() + 1);
         var varsFragment = {};
-        for (var j = 1; j < propertiesCount; j++){
+        for (var j = 0; j < propertiesCount; j++){
             varsFragment['var' + j] = {
                 type: 'Property',
                 value: Math.random(),
@@ -70,7 +70,7 @@ export default function(data) {
     });
 }
 
-export function teardown(data) {
+export function teardown() {
     var entityIds = [entityId];
     batchDelete(entityIds);
 }
