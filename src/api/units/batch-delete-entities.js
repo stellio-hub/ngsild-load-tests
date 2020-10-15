@@ -1,4 +1,4 @@
-import { check } from 'k6';
+import { check, fail } from 'k6';
 import http from 'k6/http';
 import { Trend } from 'k6/metrics';
 
@@ -13,11 +13,9 @@ export function batchDeleteEntities(body) {
         }
     };
     var response = http.post(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/entityOperations/delete`, JSON.stringify(body), httpParams);
-    check(response, {
-        'batch delete is successful': response => response.status === 200
-    });
-    if(response.status !== 200){
-        console.log('ERROR : ' + response.body);
-    }
     durationTrend.add(response.timings.duration);
+
+    if (!check(response, {'batch delete is successful': response => response.status === 200})) {
+        fail('batch delete failed : ' +  response.body);
+    }  
 }

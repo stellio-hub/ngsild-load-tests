@@ -1,11 +1,11 @@
-import { check } from 'k6';
+import { check, fail } from 'k6';
 import http from 'k6/http';
 import { Trend } from 'k6/metrics';
 
 let durationTrend = new Trend('retrieve_temporal_evolution_duration', true);
 
-export function retrieveTemporalEvolutionAfterTime(entityId, afterISOTime, attrs) {
-    var queryParams = `timerel=after&time=${afterISOTime}&attrs=${attrs}&options=temporalValues`;
+export function retrieveTemporalEvolutionAfterTime(entityId, afterISOTime) {
+    var queryParams = `timerel=after&time=${afterISOTime}&options=temporalValues`;
     retrieveTemporalEvolution(entityId, queryParams);
 }
 
@@ -20,11 +20,9 @@ function retrieveTemporalEvolution(entityId, queryParams) {
     };
 
     var response = http.get(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/temporal/entities/${entityId}?${queryParams}`, httpParams);
-    check(response, {
-        'retrieve temporal evolution is successful': response => response.status === 200
-    });
-    if(response.status !== 200){
-        console.log('ERROR : ' + response.body);
-    }
     durationTrend.add(response.timings.duration);
+    if(!check(response, {'retrieve temporal evolution is successful': response => response.status === 200})) {
+        fail('retrieve temporal evolution failed : ' + response.body);
+    }
+    
 }

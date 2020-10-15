@@ -1,7 +1,7 @@
 import { createEntity } from './units/create-entity.js';
 import { batchDelete } from './units/batch-delete.js';
 import { updateAttributes } from './units/update-attributes.js';
-import { retrieveTemporalEvolution } from './units/retrieve-temporal-evolution.js';
+import { retrieveTemporalEvolutionAfterTime } from './units/retrieve-temporal-evolution.js';
 import { group } from 'k6';
 
 var valuesCount = 30000;
@@ -65,7 +65,7 @@ export default function(data) {
             }
         });
         group(`retrieve all ${propertiesCount} temporal properties (${valuesCount} values)`, function () {
-            retrieveTemporalEvolution(entityId, now.toISOString(), 'variable');
+            retrieveTemporalEvolutionAfterTime(entityId, now.toISOString(), 'variable');
         });  
     });
 }

@@ -1,4 +1,4 @@
-import { check } from 'k6';
+import { check, fail } from 'k6';
 import http from 'k6/http';
 import { Trend } from 'k6/metrics';
 
@@ -11,11 +11,10 @@ export function deleteSubscription(subscriptionId) {
     };
 
     var response = http.del(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/subscriptions/${subscriptionId}`, httpParams);
-    check(response, {
-        'delete subscription is successful': response => response.status === 204
-    });
-    if(response.status !== 204){
-        console.log('ERROR : ' + response.body);
-    }
     durationTrend.add(response.timings.duration);
+
+    if (!check(response, {'delete subscription is successful': response => response.status === 204})) {
+        fail('delete subscription failed : ' + response.body);
+    }
+    
 }

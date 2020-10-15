@@ -10,13 +10,30 @@ export let options = {
 };
 
 var entitiesCount = __ENV.A;
+var temporalPropertiesCount = __ENV.B;
+
 export function setup() {
-    var jsonArray = new Array();
+    var now = new Date();
+    var temporalPropValue = {
+        type: 'Property',
+        value: 0.0,
+        observedAt: now.toISOString()
+    };
+    var entitiesArray = new Array();
     for(var i = 0; i < entitiesCount; i++){
-        jsonArray.push({ id: `urn:ngsi-ld:Entity:${i}`, type: "Entity" , '@context': ["http://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"]});
+        var entity = {
+             id: `urn:ngsi-ld:Entity:${i}`,
+             type: 'Entity',
+             '@context': ["http://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"]
+        };
+        
+        for(var j = 0; j < temporalPropertiesCount; j++){
+            entity['var' + j] = temporalPropValue;      
+        }
+        entitiesArray.push(entity);
     }
 
-    return Object.assign([], jsonArray);
+    return Object.assign([], entitiesArray);
 }
 
 export default function(data) {

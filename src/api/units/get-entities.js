@@ -1,4 +1,4 @@
-import { check } from 'k6';
+import { check, fail } from 'k6';
 import http from 'k6/http';
 import { Trend } from 'k6/metrics';
 
@@ -9,12 +9,11 @@ export function getEntities(selector) {
         timeout: 36000000 //10min
     };
     var response = http.get(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/entities?type=Entity`, httpParams);
-    check(response, {
-        'retrieve entities is successful': response => response.status === 200
-    });
-    if(response.status !== 200){
-        console.log('ERROR : ' + response.body);
-    }
     durationTrend.add(response.timings.duration);
+    
+    if(!check(response, {'retrieve entities is successful': response => response.status === 200 })) {
+        fail('retrieve entities failed : ' + response.body);
+    }
+  
     return response.json(selector);
 }

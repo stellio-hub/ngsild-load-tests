@@ -1,4 +1,4 @@
-import { check } from 'k6';
+import { check, fail } from 'k6';
 import http from 'k6/http';
 import { Trend } from 'k6/metrics';
 
@@ -16,13 +16,11 @@ export function createEntity(body) {
     };
 
     var response = http.post(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/entities`, JSON.stringify(payload), httpParams);
-    check(response, {
-        'creation of entity is successful': response => response.status === 201
-    });
-    if(response.status !== 201){
-        console.log('ERROR : ' + response.body);
-    }
     durationTrend.add(response.timings.duration);
+
+    if (!check(response, {'creation of entity is successful': response => response.status === 201})) {
+        fail('creation of entity failed : ' + response.body);
+    }
 }
 
 export default function() {

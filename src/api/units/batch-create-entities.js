@@ -1,4 +1,4 @@
-import { check } from 'k6';
+import { check, fail } from 'k6';
 import http from 'k6/http';
 import { Trend } from 'k6/metrics';
 
@@ -15,13 +15,11 @@ export function batchCreateEntities(body) {
     };
 
     var response = http.post(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/entityOperations/create`, JSON.stringify(payload), httpParams);
-    check(response, {
-        'batch create is successful': response => response.status === 200
-    });
-    if(response.status !== 200){
-        console.log('ERROR : ' + response.body);
-    }
     durationTrend.add(response.timings.duration);
+
+    if (!check(response, {'batch create is successful': response => response.status === 200 })) {
+       fail('batch create failed : ' +  response.body);
+    }
 }
 
 export default function() {

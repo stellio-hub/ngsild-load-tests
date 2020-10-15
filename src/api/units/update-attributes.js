@@ -1,4 +1,4 @@
-import { check } from 'k6';
+import { check, fail } from 'k6';
 import http from 'k6/http';
 import { Trend } from 'k6/metrics';
 
@@ -13,11 +13,10 @@ export function updateAttributes(entityId, body) {
         }
     };
     var response = http.patch(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/entities/${entityId}/attrs`, JSON.stringify(body), httpParams);
-    check(response, {
-        'update on attributes is successful': response => response.status === 204
-    });
-    if(response.status !== 204){
-        console.log('ERROR : ' + response.body);
-    }
     durationTrend.add(response.timings.duration);
+    
+    if(!check(response, {'update on attributes is successful': response => response.status === 204})) {
+        fail('update on attributes failed : ' + response.body);
+    }
+  
 }

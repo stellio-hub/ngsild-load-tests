@@ -5,7 +5,7 @@ import { createSubscription } from '../units/create-subscription.js';
 import { deleteSubscription } from '../units/delete-subscription.js';
 import { retrieveSubscriptions } from '../units/retrieve-subscriptions.js';
 import { updateAttributes } from '../units/update-attributes.js';
-import { retrieveTemporalEvolutionLastN } from '../units/retrieve-temporal-evolution.js';
+import { retrieveTemporalEvolutionAfterTime } from '../units/retrieve-temporal-evolution.js';
 
 import { group, sleep } from 'k6';
 
@@ -14,53 +14,9 @@ export let options = {
         'create_subscription_duration': ['avg<100'],  // threshold on the average request duration
         'retrieve_subscriptions_duration': ['avg<1500']  // threshold on the average request duration
     },
-    scenarios: {
-        minimal: {
-            executor: 'shared-iterations',
-            maxDuration: '400m',   
-            env:{
-                A:'1',
-                B:'1',
-                C:'1',
-                D:'1',
-                E:'1'
-            }
-        },
-        ten: {
-            executor: 'shared-iterations',
-            maxDuration: '400m',   
-            env:{
-                A:'10',
-                B:'10',
-                C:'10',
-                D:'10',
-                E:'10'
-            }
-        },
-        hundred: {
-            executor: 'shared-iterations',
-            maxDuration: '400m',   
-            env:{
-                A:'100',
-                B:'100',
-                C:'100',
-                D:'100',
-                E:'100'
-            }
-        },
-        thousand: {
-            executor: 'shared-iterations',
-            maxDuration: '400m',   
-            env:{
-                A:'1000',
-                B:'1000',
-                C:'1000',
-                D:'1000',
-                E:'1000'
-            }
-        }
-
-    }
+    duration: '60m',
+    vus: 1,
+    iterations: 1
 };
 
 var subscriptionsCount = __ENV.A;
@@ -147,7 +103,8 @@ export function setup() {
 }
 
 export default function(data) {
-    sleep(350);
+    //remove this sleep when we found a way to avoid the delay of 5 min between creation of entities and the reception of event by the search service
+    //sleep(350); 
     group('load on subscriptions', function () {
         group(`create ${data.length} subscriptions`, function () {
             for(var i = 0; i < data.length; i++) {
@@ -176,17 +133,19 @@ export default function(data) {
             retrieveSubscriptions(data.length, 1);
         });
 
-        group(`retrieve all subscriptions`, function () {
+        sleep(350);
+        group(`retrieve all values of first entity`, function () {
+            //retrieveTemporalEvolutionAfterTime(`${entityPrefix}0`, '1970-01-01T00:00:00Z');
             retrieveTemporalEvolutionLastN(`${entityPrefix}0`, retrievedTemporalValuesCount);
         });
     });
 }
 
 export function teardown(data) {
-    var entityIds = getEntities("#.id");
-    batchDeleteEntities(entityIds);
+    // var entityIds = getEntities("#.id");
+    // batchDeleteEntities(entityIds);
 
-    for(var i=0; i < data.length; i++) {
-        deleteSubscription(`${subscriptionPrefix}${i}`);
-    }
+    // for(var i=0; i < data.length; i++) {
+    //     deleteSubscription(`${subscriptionPrefix}${i}`);
+    // }
 }
