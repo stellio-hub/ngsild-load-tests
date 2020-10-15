@@ -52,11 +52,11 @@ export let options = {
             executor: 'shared-iterations',
             maxDuration: '400m',   
             env:{
-                A:'100',
-                B:'100',
-                C:'100',
-                D:'100',
-                E:'100'
+                A:'1000',
+                B:'1000',
+                C:'1000',
+                D:'1000',
+                E:'1000'
             }
         }
 
