@@ -5,18 +5,21 @@ import { createSubscription } from '../units/create-subscription.js';
 import { deleteSubscription } from '../units/delete-subscription.js';
 import { retrieveSubscriptions } from '../units/retrieve-subscriptions.js';
 import { updateAttributes } from '../units/update-attributes.js';
-import { retrieveTemporalEvolutionAfterTime } from '../units/retrieve-temporal-evolution.js';
+import { retrieveTemporalEvolutionLastN } from '../units/retrieve-temporal-evolution.js';
 
 import { group, sleep } from 'k6';
 
 export let options = {
     thresholds: {
-        'create_subscription_duration': ['avg<100'],  // threshold on the average request duration
-        'retrieve_subscriptions_duration': ['avg<1500']  // threshold on the average request duration
+        'create_subscription_duration': ['avg<100'],
+        'retrieve_subscriptions_duration': ['avg<1500'],
+        'update_attributes_duration':['avg<200'],
+        'retrieve_temporal_evolution_duration':['avg<20000']
     },
     duration: '60m',
     vus: 1,
-    iterations: 1
+    iterations: 1,
+    teardownTimeout : '20m'
 };
 
 var subscriptionsCount = __ENV.A;
@@ -29,8 +32,6 @@ var entityPrefix = "urn:ngsi-ld:Entity:";
 var subscriptionPrefix = "urn:ngsi-ld:Subscription:";
 var subscriptionThreshold = 1;
 var now = new Date();
-
-
 
 export function setup() {
     //CREATE ENTITIES
@@ -104,7 +105,7 @@ export function setup() {
 
 export default function(data) {
     //remove this sleep when we found a way to avoid the delay of 5 min between creation of entities and the reception of event by the search service
-    //sleep(350); 
+    sleep(350); 
     group('load on subscriptions', function () {
         group(`create ${data.length} subscriptions`, function () {
             for(var i = 0; i < data.length; i++) {
@@ -133,7 +134,7 @@ export default function(data) {
             retrieveSubscriptions(data.length, 1);
         });
 
-        sleep(350);
+        //sleep(350);
         group(`retrieve all values of first entity`, function () {
             //retrieveTemporalEvolutionAfterTime(`${entityPrefix}0`, '1970-01-01T00:00:00Z');
             retrieveTemporalEvolutionLastN(`${entityPrefix}0`, retrievedTemporalValuesCount);
@@ -142,10 +143,10 @@ export default function(data) {
 }
 
 export function teardown(data) {
-    // var entityIds = getEntities("#.id");
-    // batchDeleteEntities(entityIds);
+    var entityIds = getEntities("#.id");
+    batchDeleteEntities(entityIds);
 
-    // for(var i=0; i < data.length; i++) {
-    //     deleteSubscription(`${subscriptionPrefix}${i}`);
-    // }
+    for(var i=0; i < data.length; i++) {
+        deleteSubscription(`${subscriptionPrefix}${i}`);
+    }
 }

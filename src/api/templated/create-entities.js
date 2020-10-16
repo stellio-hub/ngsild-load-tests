@@ -3,7 +3,7 @@ import { batchDeleteEntities } from '../units/batch-delete-entities.js';
 import { getEntities } from '../units/get-entities.js';
 
 export let options = {
-    teardownTimeout: '5m',
+    teardownTimeout: '20m',
     thresholds: {
       'create_entity_duration': ['avg<100']  // threshold on the average request duration
     }

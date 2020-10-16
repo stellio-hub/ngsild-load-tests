@@ -4,6 +4,7 @@ import { getEntities } from '../units/get-entities.js';
 
 
 export let options = {
+    teardownTimeout: '20m',
     thresholds: {
       'batch_create_duration': ['avg<10000']  // threshold on a the average request duration
     }
@@ -26,7 +27,7 @@ export function setup() {
              type: 'Entity',
              '@context': ["http://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"]
         };
-        
+
         for(var j = 0; j < temporalPropertiesCount; j++){
             entity['var' + j] = temporalPropValue;      
         }

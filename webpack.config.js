@@ -3,9 +3,7 @@ const path = require('path');
 module.exports = {
   mode: 'production',
   entry: {
-    batchCreateEntities: './src/api/scenario-batch-create-entities.js',
-    createEntities: './src/api/scenario-create-entities.js',
-    loadOnOnePropTemporal: './src/api/scenario-load-on-one-temporal-prop.js',
+    createEntities: './src/api/scenario-create-entities.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
