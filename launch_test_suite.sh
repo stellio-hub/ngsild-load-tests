@@ -18,14 +18,14 @@ targetHost="StellioLoad:8080"
 #targetHost="localhost:8080"
 
 declare -a env_params
-env_params[0]='1;1;1;1;1'
-env_params[1]='10;10;10;10;10'
+#env_params[0]='1;1;1;1;1'
+#env_params[1]='10;10;10;10;10'
 #env_params[2]='100;100;100;100;100'
-#env_params[3]='1000;1000;1000;1000;1000'
+env_params[3]='1000;1000;1000;1000;1000'
 #env_params[4]='10000;10000;10000;10000;10000'
 
 #demo of ramping up
-k6 run -e STELLIO_HOSTNAME=${targetHost} src/api/scenario-create-entities.js --out json=${metrics_dir}/scenario-create-entities.json --summary-export=${summaries_dir}/scenario-create-entities.json
+#k6 run -e STELLIO_HOSTNAME=${targetHost} src/api/scenario-create-entities.js --out json=${metrics_dir}/scenario-create-entities.json --summary-export=${summaries_dir}/scenario-create-entities.json
 
 for env_param in "${env_params[@]}"
 do
