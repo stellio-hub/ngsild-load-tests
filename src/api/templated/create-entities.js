@@ -1,33 +1,26 @@
 import { createEntity } from '../units/create-entity.js';
-import { batchDeleteEntities } from '../units/batch-delete-entities.js';
-import { getEntities } from '../units/get-entities.js';
+import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 
-export let options = {
-    teardownTimeout: '20m',
+export const options = {
+    vus: 10,
+    iterations: 100000,
     thresholds: {
-      'create_entity_duration': ['avg<100']  // threshold on the average request duration
+        http_req_failed: ['rate<0.01'],
+        create_entity_duration: ['avg<500', 'p(95)<800']
     }
 };
 
-var entitiesCount = __ENV.A;
-var temporalPropertiesCount = __ENV.B;
 export default function() {
     var now = new Date();
-    var temporalPropValue = {
-        type: 'Property',
-        value: 0.0,
-        observedAt: now.toISOString()
-    };
-    for(var i = 0; i < entitiesCount; i++) {
-        var entity = { id: `urn:ngsi-ld:Entity:${i}`, type: 'Entity' };
-        for(var j = 0; j < temporalPropertiesCount; j++){
-            entity['var' + j] = temporalPropValue;      
+    const entityId = `urn:ngsi-ld:Entity:${uuidv4()}`;
+    const payload = {
+        id: entityId,
+        type: 'Entity',
+        temporalProperty: {
+            type: 'Property',
+            value: 12.34,
+            observedAt: now.toISOString()
         }
-        createEntity(entity);
-    }
-}
-
-export function teardown() {
-    var entityIds = getEntities('#.id');
-    batchDeleteEntities(entityIds);
+    };
+    createEntity(payload);
 }
