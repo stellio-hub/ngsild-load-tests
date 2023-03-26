@@ -17,4 +17,4 @@ fi
 SCRIPT_NAME=$1
 TAG_NAME="$(basename -s .js $SCRIPT_NAME)-$(date -Iminutes)"
 
-./k6 run -o timescaledb=postgresql://k6:k6@localhost:5433/k6 --vus 100 $SCRIPT_NAME --tag testid=$TAG_NAME
+./k6 run -o timescaledb=postgresql://k6:k6@localhost:5433/k6 $SCRIPT_NAME --tag testid=$TAG_NAME
