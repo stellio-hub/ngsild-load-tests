@@ -9,12 +9,18 @@
 
 set -e
 
-if [ $# -ne 1 ]; then
-    echo "Usage: ./run.sh <SCRIPT_NAME>"
+if [ $# -ne 3 ]; then
+    echo "Usage: ./run.sh <SCRIPT_NAME> <VUS> <ITERATIONS>"
     exit 1
 fi
 
 SCRIPT_NAME=$1
-TAG_NAME="$(basename -s .js $SCRIPT_NAME)-$(date -Iminutes)"
+VUS=$2
+ITERATIONS=$3
+TAG_NAME="$(basename -s .js $SCRIPT_NAME)-$VUS-$ITERATIONS-$(date -Iminutes)"
 
-./k6 run -o timescaledb=postgresql://k6:k6@localhost:5433/k6 $SCRIPT_NAME --tag testid=$TAG_NAME
+./k6 run -o timescaledb=postgresql://k6:k6@localhost:5433/k6 \
+    --vus $VUS \
+    --iterations $ITERATIONS \
+    --tag testid=$TAG_NAME \
+    $SCRIPT_NAME

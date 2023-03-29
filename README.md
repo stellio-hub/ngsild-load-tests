@@ -20,16 +20,30 @@ docker-compose up -d && docker-compose logs -f --tail=100
    
 ## How to run a load test
 
-For the scripts to run:
-* The env variable `STELLIO_HOSTNAME` needs to be set (here `localhost:8080`), configure it in `.env` file
-* The connection to Timescale has to be passed
+For a script to run:
+
+* The env variable `STELLIO_HOSTNAME` needs to be set, configure it in the `.env` file
+* The connecton to Timescale has to be passed
+* A script typically has default values for the number of VUs, iterations,... but they can be overriden on the CLI (among other ways)
+
+An util script is available to more easily launch a load test script:
 
 ```sh
-./run.sh src/api/templated/create-entities.js
+# first parameter is the name of the script to launch
+# second parameter is the number of VUs
+# third parameters is the number of iterations
+./run.sh src/api/templated/create-entities.js 10 10000
+```
+
+If needed to set a specific parameter for a script, it can be passed as an environment variable, e.g.,:
+
+```sh
+INITIAL_NUMBER_OF_ENTITIES=5 ./run.sh src/api/templated/partial-attribute-update-entities.js 10 10000
 ```
 
 ## Extensions
 
-Current extensions used:
+Extensions currently used:
+
 * https://github.com/grafana/xk6-output-timescaledb: send k6 metrics to TimescaleDB in a predefined schema and visualize them in Grafana dashboards
 * https://github.com/szkiba/xk6-dotenv: load env vars from a `.env` file

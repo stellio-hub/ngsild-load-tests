@@ -15,7 +15,8 @@ export const options = {
 
 export function setup() {
     let entities = [];
-    for (let i = 0; i < options.vus; i++) {
+    const initialNumberOfEntities = __ENV.INITIAL_NUMBER_OF_ENTITIES || 10
+    for (let i = 0; i < initialNumberOfEntities; i++) {
         var now = new Date();
         const entityId = `urn:ngsi-ld:Entity:${uuidv4()}`;
         const payload = {
@@ -36,7 +37,7 @@ export function setup() {
 
 export default function(data) {
     var now = new Date();
-    const entityId = data.entities[randomIntBetween(0, options.vus - 1)];
+    const entityId = data.entities[randomIntBetween(0, data.entities.length - 1)];
     const payload = {
         value: (Math.random() * 100),
         observedAt: now.toISOString()
