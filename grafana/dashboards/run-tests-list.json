@@ -160,9 +160,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT distinct tags->>'testid' as \"Test Id\", min(ts) as \"Start\", max(ts) as \"End\", \n    ('/d/sYt-uuBVk/load-tests-detailed-results?orgId=1&var-testid='\n    || 
-cast(tags->>'testid' as text)\n    || '&from='\n    || extract(epoch from date_trunc('second', min(ts)))*1000\n    || '&to=' || extract(epoch from date_trunc('second', max(ts)))*1000) as 
-\"Results\"\nFROM samples\nWHERE CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END\nAND $__timeFilter(ts)\nGROUP BY 1\nORDER BY 3 DESC, 2 DESC",
+          "rawSql": "SELECT distinct tags->>'testid' as \"Test Id\", min(ts) as \"Start\", max(ts) as \"End\", ('/d/sYt-uuBVk/load-tests-detailed-results?orgId=1&var-testid=' || cast(tags->>'testid' as text) || '&from=' || extract(epoch from date_trunc('second', min(ts)))*1000 || '&to=' || extract(epoch from date_trunc('second', max(ts)))*1000) as \"Results\" FROM samples\nWHERE CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END\nAND $__timeFilter(ts)\nGROUP BY 1\nORDER BY 3 DESC, 2 DESC",
           "refId": "A",
           "select": [
             [
