@@ -24,6 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -63,7 +64,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "url"
+              "options": "Results"
             },
             "properties": [
               {
@@ -88,6 +89,42 @@
                 "id": "custom.align"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Test Id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 567
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Start"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 237
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "End"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 228
+              }
+            ]
           }
         ]
       },
@@ -107,7 +144,8 @@
           ],
           "show": false
         },
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": []
       },
       "pluginVersion": "9.4.7",
       "targets": [
@@ -116,12 +154,15 @@
             "type": "postgres",
             "uid": "PB707066510A3975A"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT distinct tags->>'testid' as test_id, min(ts) as start, max(ts) as end, \n    ('/d/a21-pyAWz/open-source-load-testing-stack?orgId=1&var-testid='\n    || cast(tags->>'testid' as text)\n    || '&from='\n    || extract(epoch from date_trunc('second', min(ts)))*1000\n    || '&to=' || extract(epoch from date_trunc('second', max(ts)))*1000) as url\nFROM samples\nWHERE CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END\nGROUP BY 1\nORDER BY 3 DESC, 2 DESC",
+          "rawSql": "SELECT distinct tags->>'testid' as \"Test Id\", min(ts) as \"Start\", max(ts) as \"End\", \n    ('/d/sYt-uuBVk/load-tests-detailed-results?orgId=1&var-testid='\n    || 
+cast(tags->>'testid' as text)\n    || '&from='\n    || extract(epoch from date_trunc('second', min(ts)))*1000\n    || '&to=' || extract(epoch from date_trunc('second', max(ts)))*1000) as 
+\"Results\"\nFROM samples\nWHERE CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END\nAND $__timeFilter(ts)\nGROUP BY 1\nORDER BY 3 DESC, 2 DESC",
           "refId": "A",
           "select": [
             [
@@ -133,6 +174,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "timeColumn": "time",
           "where": [
             {
@@ -166,8 +224,12 @@
         "allValue": "'<all>'",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "postgres",
@@ -177,7 +239,7 @@
         "hide": 0,
         "includeAll": true,
         "label": "Test ID",
-        "multi": false,
+        "multi": true,
         "name": "testid",
         "options": [],
         "query": "SELECT DISTINCT tags->>'testid' AS \"id\" FROM samples WHERE metric = 'vus';",
@@ -190,13 +252,14 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Test Runs List",
-  "uid": "UoYDJHJZk",
-  "version": 1,
+  "title": "List of tests runs",
+  "uid": "VYERPuB4k",
+  "version": 8,
   "weekStart": ""
 }
+

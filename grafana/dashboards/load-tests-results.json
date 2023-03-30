@@ -24,6 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -101,7 +102,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"success_95th_resp_time\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_req_duration'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"success_95th_resp_time\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  
+AND metric = 'http_req_duration'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
           "refId": "A",
           "select": [
             [
@@ -180,7 +182,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -200,7 +202,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  SUM(value) AS \"reqs_per_sec\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_reqs'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  SUM(value) AS \"reqs_per_sec\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_reqs'\n  AND (CASE WHEN $testid 
+!= '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
           "refId": "A",
           "select": [
             [
@@ -299,7 +302,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  MAX(value) AS \"vus\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'vus'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  MAX(value) AS \"vus\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'vus'\n  AND (CASE WHEN $testid != '<all>' 
+THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
           "refId": "A",
           "select": [
             [
@@ -398,7 +402,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  1 AS \"time\",\n  SUM(value)\nFROM\n  samples\nWHERE\n  metric = 'http_reqs'\n  AND (tags->>'status')::int >= 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
+          "rawSql": "SELECT\n  1 AS \"time\",\n  SUM(value)\nFROM\n  samples\nWHERE\n  metric = 'http_reqs'\n  AND (tags->>'status')::int >= 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' 
+= $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
           "refId": "A",
           "select": [
             [
@@ -497,7 +502,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  1 AS \"time\",\n  SUM(value)\nFROM\n  samples\nWHERE\n  metric = 'http_reqs'\n  AND (tags->>'error_code')::int >= 1000\n  AND (tags->>'error_code')::int <= 1399\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
+          "rawSql": "SELECT\n  1 AS \"time\",\n  SUM(value)\nFROM\n  samples\nWHERE\n  metric = 'http_reqs'\n  AND (tags->>'error_code')::int >= 1000\n  AND (tags->>'error_code')::int <= 1399\n  AND 
+(CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
           "refId": "A",
           "select": [
             [
@@ -626,11 +632,13 @@
             "type": "postgres",
             "uid": "PB707066510A3975A"
           },
+          "editorMode": "code",
           "format": "time_series",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"successful\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_req_duration'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"successful\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric 
+= 'http_req_duration'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
           "refId": "A",
           "select": [
             [
@@ -642,6 +650,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "timeColumn": "time",
           "where": [
             {
@@ -661,7 +686,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"failed\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_req_duration'\n  AND (tags->>'status')::integer >= 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"failed\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 
+'http_req_duration'\n  AND (tags->>'status')::integer >= 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
           "refId": "B",
           "select": [
             [
@@ -802,11 +828,13 @@
             "type": "postgres",
             "uid": "PB707066510A3975A"
           },
+          "editorMode": "code",
           "format": "time_series",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  SUM(value) AS \"reqs_per_sec\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_reqs'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  SUM(value) AS \"reqs_per_sec\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_reqs'\n  AND (CASE WHEN $testid 
+!= '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
           "refId": "A",
           "select": [
             [
@@ -818,6 +846,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "timeColumn": "time",
           "where": [
             {
@@ -837,7 +882,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  MAX(value) AS \"vus\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'vus'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  MAX(value) AS \"vus\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'vus'\n  AND (CASE WHEN $testid != '<all>' 
+THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
           "refId": "B",
           "select": [
             [
@@ -1015,7 +1061,9 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  SUM(CASE WHEN (tags->>'status')::int >= 400 THEN value ELSE 0 END)::real / SUM(value)::real * 100.0 AS \"http_failure_rate\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_reqs'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  SUM(CASE WHEN (tags->>'status')::int >= 400 THEN value ELSE 0 END)::real / SUM(value)::real * 100.0 AS 
+\"http_failure_rate\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_reqs'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 
+ASC",
           "refId": "B",
           "select": [
             [
@@ -1046,7 +1094,9 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  CASE WHEN COUNT(value) > 0 THEN SUM(CASE WHEN value = 0 THEN 1 ELSE 0 END)::real / COUNT(value)::real * 100.0 ELSE 0 END AS \"check_failure_rate\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'checks'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  CASE WHEN COUNT(value) > 0 THEN SUM(CASE WHEN value = 0 THEN 1 ELSE 0 END)::real / COUNT(value)::real * 100.0 ELSE 0 END AS 
+\"check_failure_rate\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'checks'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 
+ASC",
           "refId": "A",
           "select": [
             [
@@ -1197,7 +1247,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE WHEN \"tags\" IS NULL THEN \"metric\" ELSE \"metric\" || '{' || (SELECT key || ':' || value FROM jsonb_each_text(\"tags\")) || '}' END,\n  \"threshold\",\n  CASE WHEN \"last_failed\" THEN 0 ELSE 1 END AS pass_fail\nFROM\n  thresholds\nWHERE\n  $__timeFilter(ts)\nORDER BY 3 ASC\nLIMIT 100",
+          "rawSql": "SELECT\n  CASE WHEN \"tags\" IS NULL THEN \"metric\" ELSE \"metric\" || '{' || (SELECT key || ':' || value FROM jsonb_each_text(\"tags\")) || '}' END,\n  \"threshold\",\n  CASE WHEN 
+\"last_failed\" THEN 0 ELSE 1 END AS pass_fail\nFROM\n  thresholds\nWHERE\n  $__timeFilter(ts)\nORDER BY 3 ASC\nLIMIT 100",
           "refId": "A",
           "select": [
             [
@@ -1338,7 +1389,9 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  tags->>'check' AS \"check\",\n  SUM(CASE WHEN value = 1 THEN 1 ELSE 0 END) AS \"successful\",\n  SUM(CASE WHEN value = 0 THEN 1 ELSE 0 END) AS \"failed\",\n  CASE WHEN COUNT(value) > 0 THEN SUM(CASE WHEN value = 0 THEN 1 ELSE 0 END)::real / COUNT(value)::real * 100.0 ELSE 0 END AS \"failure_rate\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'checks'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 4 DESC\nLIMIT 100",
+          "rawSql": "SELECT\n  tags->>'check' AS \"check\",\n  SUM(CASE WHEN value = 1 THEN 1 ELSE 0 END) AS \"successful\",\n  SUM(CASE WHEN value = 0 THEN 1 ELSE 0 END) AS \"failed\",\n  CASE WHEN 
+COUNT(value) > 0 THEN SUM(CASE WHEN value = 0 THEN 1 ELSE 0 END)::real / COUNT(value)::real * 100.0 ELSE 0 END AS \"failure_rate\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'checks'\n  
+AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 4 DESC\nLIMIT 100",
           "refId": "A",
           "select": [
             [
@@ -1501,7 +1554,18 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  tags->>'url' AS \"URL\",\n  tags->>'method' AS \"method\",\n  CASE \n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1000 AND (tags->>'error_code')::int <= 1099 THEN tags->>'error_code' || ' (General)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1101 THEN tags->>'error_code' || ' (DNS no such host)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1110 THEN tags->>'error_code' || ' (DNS blacklisted IP)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1100 AND (tags->>'error_code')::int <= 1199 THEN tags->>'error_code' || ' (DNS)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1211 THEN tags->>'error_code' || ' (TCP connection timeout)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1212 THEN tags->>'error_code' || ' (TCP connection refused)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1213 THEN tags->>'error_code' || ' (TCP connection error)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1200 AND (tags->>'error_code')::int <= 1299 THEN tags->>'error_code' || ' (TCP)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1311 THEN tags->>'error_code' || ' (TLS cert not matching hostname)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1300 AND (tags->>'error_code')::int <= 1399 THEN tags->>'error_code' || ' (TLS)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1600 AND (tags->>'error_code')::int <= 1699 THEN tags->>'error_code' || ' (HTTP/2)'\n    WHEN (tags->>'status')::int = 0 THEN tags->>'error_code'\n    ELSE tags->>'status'\n  END AS \"status\",\n  COUNT(*) AS count,\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"95th\",\n  percentile_cont(0.99) WITHIN GROUP (ORDER BY value) AS \"99th\",\n  MAX(value) AS \"max\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_req_duration'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1, 2, 3\nORDER BY 6 DESC\nLIMIT 100",
+          "rawSql": "SELECT\n  tags->>'url' AS \"URL\",\n  tags->>'method' AS \"method\",\n  CASE \n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1000 AND 
+(tags->>'error_code')::int <= 1099 THEN tags->>'error_code' || ' (General)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1101 THEN tags->>'error_code' || ' (DNS no such host)'\n    
+WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1110 THEN tags->>'error_code' || ' (DNS blacklisted IP)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1100 AND 
+(tags->>'error_code')::int <= 1199 THEN tags->>'error_code' || ' (DNS)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1211 THEN tags->>'error_code' || ' (TCP connection 
+timeout)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1212 THEN tags->>'error_code' || ' (TCP connection refused)'\n    WHEN (tags->>'status')::int = 0 AND 
+(tags->>'error_code')::int = 1213 THEN tags->>'error_code' || ' (TCP connection error)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1200 AND (tags->>'error_code')::int <= 1299 
+THEN tags->>'error_code' || ' (TCP)'\n    WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1311 THEN tags->>'error_code' || ' (TLS cert not matching hostname)'\n    WHEN 
+(tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1300 AND (tags->>'error_code')::int <= 1399 THEN tags->>'error_code' || ' (TLS)'\n    WHEN (tags->>'status')::int = 0 AND 
+(tags->>'error_code')::int >= 1600 AND (tags->>'error_code')::int <= 1699 THEN tags->>'error_code' || ' (HTTP/2)'\n    WHEN (tags->>'status')::int = 0 THEN tags->>'error_code'\n    ELSE 
+tags->>'status'\n  END AS \"status\",\n  COUNT(*) AS count,\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"95th\",\n  percentile_cont(0.99) WITHIN GROUP (ORDER BY value) AS \"99th\",\n  
+MAX(value) AS \"max\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_req_duration'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1, 2, 
+3\nORDER BY 6 DESC\nLIMIT 100",
           "refId": "A",
           "select": [
             [
@@ -1581,8 +1645,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1626,7 +1689,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"blocked\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_req_blocked'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"blocked\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 
+'http_req_blocked'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
           "refId": "A",
           "select": [
             [
@@ -1657,7 +1721,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"connecting\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_req_connecting'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"connecting\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric 
+= 'http_req_connecting'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
           "refId": "E",
           "select": [
             [
@@ -1688,7 +1753,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"tls_handshake\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_req_tls_handshaking'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"tls_handshake\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND 
+metric = 'http_req_tls_handshaking'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
           "refId": "F",
           "select": [
             [
@@ -1719,7 +1785,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"sending\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_req_sending'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"sending\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 
+'http_req_sending'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
           "refId": "B",
           "select": [
             [
@@ -1750,7 +1817,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"waiting\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_req_waiting'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"waiting\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 
+'http_req_waiting'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
           "refId": "C",
           "select": [
             [
@@ -1781,7 +1849,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"receiving\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'http_req_receiving'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"receiving\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 
+'http_req_receiving'\n  AND (tags->>'status')::integer < 400\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC\n",
           "refId": "D",
           "select": [
             [
@@ -1853,8 +1922,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1914,7 +1982,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  SUM(value) AS \"data_sent\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'data_sent'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  SUM(value) AS \"data_sent\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'data_sent'\n  AND (CASE WHEN $testid != 
+'<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
           "refId": "A",
           "select": [
             [
@@ -1945,7 +2014,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  SUM(value) AS \"data_received\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'data_received'\n  AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
+          "rawSql": "SELECT\n  date_trunc('seconds', ts) AS \"time\",\n  SUM(value) AS \"data_received\"\nFROM\n  samples\nWHERE\n  $__timeFilter(ts)\n  AND metric = 'data_received'\n  AND (CASE WHEN 
+$testid != '<all>' THEN tags->>'testid' = $testid ELSE true END)\nGROUP BY 1\nORDER BY 1 ASC",
           "refId": "B",
           "select": [
             [
@@ -1982,8 +2052,12 @@
         "allValue": "'<all>'",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": [
+            "partial-attribute-update-entities-100-10000-2023-03-30-18:57:09"
+          ],
+          "value": [
+            "partial-attribute-update-entities-100-10000-2023-03-30-18:57:09"
+          ]
         },
         "datasource": {
           "type": "postgres",
@@ -1993,11 +2067,11 @@
         "hide": 0,
         "includeAll": true,
         "label": "Test ID",
-        "multi": false,
+        "multi": true,
         "name": "testid",
         "options": [],
         "query": "SELECT DISTINCT tags->>'testid' AS \"id\" FROM samples WHERE metric = 'vus';",
-        "refresh": 2,
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -2009,8 +2083,8 @@
     ]
   },
   "time": {
-    "from": "now-5m",
-    "to": "now"
+    "from": "2023-03-30T16:57:10.000Z",
+    "to": "2023-03-30T16:58:20.000Z"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -2038,8 +2112,9 @@
     ]
   },
   "timezone": "",
-  "title": "Open Source Load Testing Stack",
-  "uid": "a21-pyAWz",
-  "version": 1,
+  "title": "Load tests detailed results",
+  "uid": "sYt-uuBVk",
+  "version": 2,
   "weekStart": ""
 }
+
