@@ -1,3 +1,4 @@
+import { SharedArray } from 'k6/data';
 import { createEntity } from '../api/create-entity.js';
 import { partialAttributeUpdate } from '../api/partial-attribute-update.js'
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
@@ -13,34 +14,29 @@ export const options = {
     }
 };
 
+const entities = new SharedArray('template entity', function () {
+    return JSON.parse(open('../data/template_entity.json')).entities; 
+});
+
 export function setup() {
-    let entities = [];
+    let createdEntitiesIds = [];
     const initialNumberOfEntities = __ENV.INITIAL_NUMBER_OF_ENTITIES || 10
     for (let i = 0; i < initialNumberOfEntities; i++) {
-        var now = new Date();
-        const entityId = `urn:ngsi-ld:Entity:${uuidv4()}`;
-        const payload = {
-            id: entityId,
-            type: 'Entity',
-            temporalProperty: {
-                type: 'Property',
-                value: 12.34,
-                observedAt: now.toISOString()
-            }
-        };
-        createEntity(payload);
-        entities.push(entityId);
+        const entity = Object.assign({}, entities[0]);
+        entity.id = `urn:ngsi-ld:Entity:${uuidv4()}`;
+        createEntity(entity);
+        createdEntitiesIds.push(entity.id);
     }
 
-    return { entities: entities };
+    return { createdEntitiesIds: createdEntitiesIds };
 }
 
 export default function(data) {
     var now = new Date();
-    const entityId = data.entities[randomIntBetween(0, data.entities.length - 1)];
+    const entityId = data.createdEntitiesIds[randomIntBetween(0, data.createdEntitiesIds.length - 1)];
     const payload = {
         value: (Math.random() * 100),
         observedAt: now.toISOString()
     };
-    partialAttributeUpdate(entityId, 'temporalProperty', payload);
+    partialAttributeUpdate(entityId, 'dissolvedOxygen', payload);
 }
