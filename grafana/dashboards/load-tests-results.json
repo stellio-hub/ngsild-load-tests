@@ -24,7 +24,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -82,7 +81,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -1444,7 +1443,7 @@
           {
             "matcher": {
               "id": "byRegexp",
-              "options": "/max|([0-9]{2}th)/"
+              "options": "/max|avg|([0-9]{2}th)/"
             },
             "properties": [
               {
@@ -1504,6 +1503,18 @@
                 "id": "custom.align"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 103
+              }
+            ]
           }
         ]
       },
@@ -1524,7 +1535,13 @@
           ],
           "show": false
         },
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "avg"
+          }
+        ]
       },
       "pluginVersion": "9.4.7",
       "targets": [
@@ -1534,11 +1551,12 @@
             "type": "postgres",
             "uid": "PB707066510A3975A"
           },
+          "editorMode": "code",
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT   tags->>'url' AS \"URL\",   tags->>'method' AS \"method\",   CASE      WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1000 AND (tags->>'error_code')::int <= 1099 THEN tags->>'error_code' || ' (General)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1101 THEN tags->>'error_code' || ' (DNS no such host)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1110 THEN tags->>'error_code' || ' (DNS blacklisted IP)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1100 AND (tags->>'error_code')::int <= 1199 THEN tags->>'error_code' || ' (DNS)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1211 THEN tags->>'error_code' || ' (TCP connection timeout)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1212 THEN tags->>'error_code' || ' (TCP connection refused)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1213 THEN tags->>'error_code' || ' (TCP connection error)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1200 AND (tags->>'error_code')::int <= 1299 THEN tags->>'error_code' || ' (TCP)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1311 THEN tags->>'error_code' || ' (TLS cert not matching hostname)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1300 AND (tags->>'error_code')::int <= 1399 THEN tags->>'error_code' || ' (TLS)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1600 AND (tags->>'error_code')::int <= 1699 THEN tags->>'error_code' || ' (HTTP/2)'     WHEN (tags->>'status')::int = 0 THEN tags->>'error_code'     ELSE tags->>'status'   END AS \"status\",   COUNT(*) AS count,   percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"95th\",   percentile_cont(0.99) WITHIN GROUP (ORDER BY value) AS \"99th\",   MAX(value) AS \"max\" FROM   samples WHERE   $__timeFilter(ts)   AND metric = 'http_req_duration'   AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END) GROUP BY 1, 2, 3 ORDER BY 6 DESC LIMIT 100",
+          "rawSql": "SELECT   tags->>'url' AS \"URL\",   \n    tags->>'method' AS \"method\",   \n    CASE      WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1000 AND (tags->>'error_code')::int <= 1099 THEN tags->>'error_code' || ' (General)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1101 THEN tags->>'error_code' || ' (DNS no such host)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1110 THEN tags->>'error_code' || ' (DNS blacklisted IP)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1100 AND (tags->>'error_code')::int <= 1199 THEN tags->>'error_code' || ' (DNS)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1211 THEN tags->>'error_code' || ' (TCP connection timeout)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1212 THEN tags->>'error_code' || ' (TCP connection refused)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1213 THEN tags->>'error_code' || ' (TCP connection error)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1200 AND (tags->>'error_code')::int <= 1299 THEN tags->>'error_code' || ' (TCP)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int = 1311 THEN tags->>'error_code' || ' (TLS cert not matching hostname)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1300 AND (tags->>'error_code')::int <= 1399 THEN tags->>'error_code' || ' (TLS)'     WHEN (tags->>'status')::int = 0 AND (tags->>'error_code')::int >= 1600 AND (tags->>'error_code')::int <= 1699 THEN tags->>'error_code' || ' (HTTP/2)'     WHEN (tags->>'status')::int = 0 THEN tags->>'error_code'     ELSE tags->>'status'   END AS \"status\",   \n    COUNT(*) AS count,   \n    percentile_cont(0.95) WITHIN GROUP (ORDER BY value) AS \"95th\",   \n    percentile_cont(0.99) WITHIN GROUP (ORDER BY value) AS \"99th\",   \n    MAX(value) AS \"max\",\n    AVG(value) AS \"avg\" \n    FROM   samples \n    WHERE   $__timeFilter(ts)   \n    AND metric = 'http_req_duration'   \n    AND (CASE WHEN $testid != '<all>' THEN tags->>'testid' = $testid ELSE true END) \n    GROUP BY 1, 2, 3 \n    ORDER BY 6 \n    DESC LIMIT 100",
           "refId": "A",
           "select": [
             [
@@ -1550,6 +1568,23 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
           "timeColumn": "time",
           "where": [
             {
@@ -1618,7 +1653,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1889,7 +1925,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2018,10 +2055,10 @@
         "current": {
           "selected": false,
           "text": [
-            "partial-attribute-update-entities-100-10000-2023-03-30-18:57:09"
+            "partial-attribute-update-entities-10-10000-2023-04-01-18:45:11"
           ],
           "value": [
-            "partial-attribute-update-entities-100-10000-2023-03-30-18:57:09"
+            "partial-attribute-update-entities-10-10000-2023-04-01-18:45:11"
           ]
         },
         "datasource": {
@@ -2048,8 +2085,8 @@
     ]
   },
   "time": {
-    "from": "2023-03-30T16:57:10.000Z",
-    "to": "2023-03-30T16:58:20.000Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -2079,7 +2116,6 @@
   "timezone": "",
   "title": "Load tests detailed results",
   "uid": "sYt-uuBVk",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
-
