@@ -32,13 +32,13 @@ An util script is available to more easily launch a load test script:
 # first parameter is the name of the script to launch
 # second parameter is the number of VUs
 # third parameters is the number of iterations
-./run.sh src/api/templated/create-entities.js 10 10000
+./run.sh src/tests/create-entities.js 10 10000
 ```
 
 If needed to set a specific parameter for a script, it can be passed as an environment variable, e.g.,:
 
 ```sh
-INITIAL_NUMBER_OF_ENTITIES=5 ./run.sh src/api/templated/partial-attribute-update-entities.js 10 10000
+INITIAL_NUMBER_OF_ENTITIES=5 ./run.sh src/tests/partial-attribute-update-entities.js 10 10000
 ```
 
 ## Extensions

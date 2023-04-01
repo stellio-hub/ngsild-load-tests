@@ -1,5 +1,5 @@
 import { SharedArray } from 'k6/data';
-import { createEntity } from '../units/create-entity.js';
+import { createEntity } from '../api/create-entity.js';
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 
 export const options = {
@@ -12,7 +12,7 @@ export const options = {
 };
 
 const entities = new SharedArray('template entity', function () {
-    return JSON.parse(open('./data/template_entity.json')).entities; 
+    return JSON.parse(open('../data/template_entity.json')).entities; 
 });
     
 export default function() {

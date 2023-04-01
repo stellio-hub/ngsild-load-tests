@@ -1,5 +1,5 @@
-import { createEntity } from '../units/create-entity.js';
-import { partialAttributeUpdate } from '../units/partial-attribute-update.js'
+import { createEntity } from '../api/create-entity.js';
+import { partialAttributeUpdate } from '../api/partial-attribute-update.js'
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 
