@@ -1,3 +1,4 @@
+import { SharedArray } from 'k6/data';
 import { createEntity } from '../units/create-entity.js';
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 
@@ -10,17 +11,12 @@ export const options = {
     }
 };
 
+const entities = new SharedArray('template entity', function () {
+    return JSON.parse(open('./data/template_entity.json')).entities; 
+});
+    
 export default function() {
-    var now = new Date();
-    const entityId = `urn:ngsi-ld:Entity:${uuidv4()}`;
-    const payload = {
-        id: entityId,
-        type: 'Entity',
-        temporalProperty: {
-            type: 'Property',
-            value: 12.34,
-            observedAt: now.toISOString()
-        }
-    };
-    createEntity(payload);
+    const entity = Object.assign({}, entities[0]);
+    entity.id = `urn:ngsi-ld:Entity:${uuidv4()}`;
+    createEntity(entity);
 }
