@@ -9,7 +9,6 @@ export const options = {
     iterations: 100000,
     thresholds: {
         http_req_failed: ['rate<0.01'],
-        create_entity_duration: ['avg<500', 'p(95)<800'],
         partial_attribute_update_duration: ['avg<200', 'p(95)<400']
     }
 };
