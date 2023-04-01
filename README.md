@@ -41,6 +41,20 @@ If needed to set a specific parameter for a script, it can be passed as an envir
 INITIAL_NUMBER_OF_ENTITIES=5 ./run.sh src/tests/partial-attribute-update-entities.js 10 10000
 ```
 
+## List of ready to use tests
+
+* Create entities
+
+```sh
+./run.sh src/tests/create-entities.js 10 10000
+```
+
+* Partial attribute update
+
+```sh
+INITIAL_NUMBER_OF_ENTITIES=10 ./run.sh src/tests/partial-attribute-update-entities.js 10 10000
+```
+
 ## Extensions
 
 Extensions currently used:
