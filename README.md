@@ -17,7 +17,7 @@ Follow instructions on https://k6.io/docs/extensions/guides/build-a-k6-binary-us
 ```sh
 docker-compose up -d && docker-compose logs -f --tail=100
 ```
-   
+
 ## How to run a load test
 
 For a script to run:
@@ -53,6 +53,28 @@ INITIAL_NUMBER_OF_ENTITIES=5 ./run.sh src/tests/partial-attribute-update-entitie
 
 ```sh
 INITIAL_NUMBER_OF_ENTITIES=10 ./run.sh src/tests/partial-attribute-update-entities.js 10 10000
+```
+
+## Delete a test
+
+In order to not pollute the DB with results of unwanted runs, it is possible to manually delete a test from the DB:
+
+* Connect to the container running the DB
+
+```sh
+docker exec -it <timescaledb_container> bash
+```
+
+* Connect to the DB
+
+```sh
+psql -U k6 k6
+```
+
+* Delete the test
+
+```sql
+delete from samples where tags->>'testid' = '<test_id>';
 ```
 
 ## Extensions
