@@ -23,7 +23,7 @@ docker-compose up -d && docker-compose logs -f --tail=100
 For a script to run:
 
 * The env variable `STELLIO_HOSTNAME` needs to be set, configure it in the `.env` file
-* The connecton to Timescale has to be passed
+* The connection to Timescale has to be passed
 * A script typically has default values for the number of VUs, iterations,... but they can be overriden on the CLI (among other ways)
 
 An util script is available to more easily launch a load test script:
@@ -53,6 +53,18 @@ INITIAL_NUMBER_OF_ENTITIES=5 ./run.sh src/tests/partial-attribute-update-entitie
 
 ```sh
 INITIAL_NUMBER_OF_ENTITIES=10 ./run.sh src/tests/partial-attribute-update-entities.js 10 10000
+```
+
+* Query entities by type and property value
+
+```sh
+INITIAL_NUMBER_OF_ENTITIES=1000 INITIAL_NUMBER_OF_TYPES=5 ./run.sh src/tests/query-entities-by-type-and-property-value.js 10 10000
+```
+
+* Query entities by type and relationship object
+
+```sh
+INITIAL_NUMBER_OF_ENTITIES=1000 INITIAL_NUMBER_OF_TYPES=5 INITIAL_NUMBER_OF_RELATIONSHIPS=10 ./run.sh src/tests/query-entities-by-type-and-relationship-object.js 10 10000
 ```
 
 ## Delete a test

@@ -22,5 +22,6 @@ TAG_NAME="$(basename -s .js $SCRIPT_NAME)-$VUS-$ITERATIONS-$(date +%F-%H:%M:%S)"
 ./k6 run -o timescaledb=postgresql://k6:k6@localhost:5433/k6 \
     --vus $VUS \
     --iterations $ITERATIONS \
+    --duration '15m' \
     --tag testid=$TAG_NAME \
     $SCRIPT_NAME

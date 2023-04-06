@@ -1,19 +1,22 @@
 import { check, fail } from 'k6';
 import http from 'k6/http';
 import { Trend } from 'k6/metrics';
+import { URL } from 'https://jslib.k6.io/url/1.0.0/index.js';
 
-let durationTrend = new Trend('retrieve_entities_duration', true);
+let durationTrend = new Trend('get_entities_duration', true);
 
-export function getEntities(selector) {
-    var httpParams = {
-        timeout: 36000000 //10min
+export function getEntities(types, qParams) {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Link': '<https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
     };
-    var response = http.get(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/entities?type=Entity`, httpParams);
+    const url = new URL(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/entities`);
+    url.searchParams.append('type', types);
+    url.searchParams.append('q', qParams);
+    var response = http.get(url.toString(), { headers });
     durationTrend.add(response.timings.duration);
-    
-    if(!check(response, {'retrieve entities is successful': response => response.status === 200 })) {
-        fail('retrieve entities failed : ' + response.body);
-    }
-  
-    return response.json(selector);
+
+    check(response, {
+        'get entities is successful': (r) => r.status === 200
+    });
 }
