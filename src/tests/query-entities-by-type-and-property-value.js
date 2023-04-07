@@ -18,7 +18,7 @@ export const options = {
 };
 
 const observedProperties = ['ammonium', 'waterTemperature', 'dissolvedOxygen'];
-const nonObservedProperties = ['name=="Name of my entity"', 'description=="A short description of my entity"', 'stationCode=="BSS002JAWM"'];
+const nonObservedPropertiesStaticQueries = ['name=="Name of my entity"', 'description=="A short description of my entity"', 'stationCode=="BSS002JAWM"'];
 const entities = new SharedArray('template entity', function () {
     return JSON.parse(open('../data/template_entity.json')).entities;
 });
@@ -73,7 +73,7 @@ export function setup() {
 }
 
 export default function(data) {
-    const qParameter  = `${randomItem(observedProperties)}>${randomIntBetween(0,100)};${randomItem(nonObservedProperties)}`
+    const qParameter  = `${randomItem(observedProperties)}>${randomIntBetween(0,100)};${randomItem(nonObservedPropertiesStaticQueries)}`
     getEntities(
         randomItem(data.types),
         qParameter

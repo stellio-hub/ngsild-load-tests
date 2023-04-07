@@ -32,13 +32,14 @@ An util script is available to more easily launch a load test script:
 # first parameter is the name of the script to launch
 # second parameter is the number of VUs
 # third parameters is the number of iterations
-./run.sh src/tests/create-entities.js 10 10000
+# fourth parameters is the max duration
+./run.sh src/tests/create-entities.js 10 10000 10m
 ```
 
 If needed to set a specific parameter for a script, it can be passed as an environment variable, e.g.,:
 
 ```sh
-INITIAL_NUMBER_OF_ENTITIES=5 ./run.sh src/tests/partial-attribute-update-entities.js 10 10000
+INITIAL_NUMBER_OF_ENTITIES=5 ./run.sh src/tests/partial-attribute-update-entities.js 10 10000 10m
 ```
 
 ## List of ready to use tests
@@ -46,25 +47,25 @@ INITIAL_NUMBER_OF_ENTITIES=5 ./run.sh src/tests/partial-attribute-update-entitie
 * Create entities
 
 ```sh
-./run.sh src/tests/create-entities.js 10 10000
+./run.sh src/tests/create-entities.js 10 10000 10m
 ```
 
 * Partial attribute update
 
 ```sh
-INITIAL_NUMBER_OF_ENTITIES=10 ./run.sh src/tests/partial-attribute-update-entities.js 10 10000
+INITIAL_NUMBER_OF_ENTITIES=10 ./run.sh src/tests/partial-attribute-update-entities.js 10 10000 10m
 ```
 
 * Query entities by type and property value
 
 ```sh
-INITIAL_NUMBER_OF_ENTITIES=1000 INITIAL_NUMBER_OF_TYPES=5 ./run.sh src/tests/query-entities-by-type-and-property-value.js 10 10000
+INITIAL_NUMBER_OF_ENTITIES=1000 INITIAL_NUMBER_OF_TYPES=5 ./run.sh src/tests/query-entities-by-type-and-property-value.js 10 10000 15m
 ```
 
 * Query entities by type and relationship object
 
 ```sh
-INITIAL_NUMBER_OF_ENTITIES=1000 INITIAL_NUMBER_OF_TYPES=5 INITIAL_NUMBER_OF_RELATIONSHIPS=10 ./run.sh src/tests/query-entities-by-type-and-relationship-object.js 10 10000
+INITIAL_NUMBER_OF_ENTITIES=1000 INITIAL_NUMBER_OF_TYPES=5 INITIAL_NUMBER_OF_RELATIONSHIPS=10 ./run.sh src/tests/query-entities-by-type-and-relationship-object.js 10 10000 15m
 ```
 
 ## Delete a test
