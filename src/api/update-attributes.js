@@ -6,17 +6,14 @@ let durationTrend = new Trend('update_attributes_duration', true);
 
 export function updateAttributes(entityId, body) {
    
-    var httpParams = {
-        timeout: 18000000, //5min
-        headers: {
-          'Content-Type': 'application/json'  
-        }
+    const headers = {
+        'Content-Type': 'application/json',
+        'Link': '<https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
     };
-    var response = http.patch(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/entities/${entityId}/attrs`, JSON.stringify(body), httpParams);
+    var response = http.patch(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/entities/${entityId}/attrs`, JSON.stringify(body), { headers });
     durationTrend.add(response.timings.duration);
-    
-    if(!check(response, {'update on attributes is successful': response => response.status === 204})) {
-        fail('update on attributes failed : ' + response.body);
-    }
-  
+
+    check(response, {
+        'update attributes is successful': response => response.status === 204
+    });
 }

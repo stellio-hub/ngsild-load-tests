@@ -1,0 +1,47 @@
+{
+
+  "fragmentAttributes": [{
+	"ammonium": [
+	  {
+		"type": "Property",
+		"value": 0.34,
+		"observedAt": "2023-04-01T12:00:00Z",
+		"unitCode": "M1",
+		"datasetId": "urn:ngsi-ld:Dataset:Bottom"
+	  },
+	  {
+		"type": "Property",
+		"value": 0.41,
+		"observedAt": "2023-04-01T13:00:00Z",
+		"unitCode": "M1",
+		"datasetId": "urn:ngsi-ld:Dataset:Surface"
+	  }
+	],
+	"dissolvedOxygen": {
+	  "type": "Property",
+	  "sandreCode": {
+		"type": "Property",
+		"value": "1311"
+	  },
+	  "value": 8.9,
+	  "observedAt": "2023-04-01T10:00:00Z",
+	  "unitCode": "M1"
+	},
+	"waterTemperature": [
+	  {
+		"type": "Property",
+		"value": 10.9,
+		"observedAt": "2022-12-09T13:40:00Z",
+		"unitCode": "CEL",
+		"datasetId": "urn:ngsi-ld:Dataset:Bottom"
+	  },
+	  {
+		"type": "Property",
+		"value": 12.9,
+		"observedAt": "2022-12-09T13:40:00Z",
+		"unitCode": "CEL",
+		"datasetId": "urn:ngsi-ld:Dataset:Surface"
+	  }
+	]
+  }]
+}
