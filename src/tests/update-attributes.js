@@ -18,13 +18,13 @@ const entities = new SharedArray('template entity', function () {
     return JSON.parse(open('../data/template_entity.json')).entities;
 });
 
-const fragmentAttributes = new SharedArray('fragment update attributes', function () {
-    return JSON.parse(open('../data/fragment_update_attributes.json')).fragmentAttributes;
+const attributesFragment = new SharedArray('update attributes fragment', function () {
+    return JSON.parse(open('../data/update_attributes_fragment.json')).attributes;
 });
 
-export function generateRandomFragmentAttributes() {
+export function generateRandomAttributesFragment() {
     var now = new Date();
-    const attributes = Object.assign({}, fragmentAttributes[0]);
+    const attributes = Object.assign({}, attributesFragment[0]);
 
     const updatedAmmonium1 = Object.assign({}, attributes.ammonium[0], {
         value: (Math.random() * 100),
@@ -70,6 +70,6 @@ export function setup() {
 
 export default function(data) {
     const entityId = randomItem(data.createdEntitiesIds);
-    const fragmentAttributes = generateRandomFragmentAttributes();
-    updateAttributes(entityId, fragmentAttributes);
+    const attributes = generateRandomAttributesFragment();
+    updateAttributes(entityId, attributes);
 }
