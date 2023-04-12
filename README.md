@@ -56,6 +56,12 @@ INITIAL_NUMBER_OF_ENTITIES=5 ./run.sh src/tests/partial-attribute-update-entitie
 INITIAL_NUMBER_OF_ENTITIES=10 ./run.sh src/tests/partial-attribute-update-entities.js 10 10000 10m
 ```
 
+* Update attributes
+
+```sh
+INITIAL_NUMBER_OF_ENTITIES=10 ./run.sh src/tests/update-attributes.js 10 10000 10m
+```
+
 * Query entities by type and property value
 
 ```sh
