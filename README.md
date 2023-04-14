@@ -74,6 +74,12 @@ INITIAL_NUMBER_OF_ENTITIES=1000 INITIAL_NUMBER_OF_TYPES=5 ./run.sh src/tests/que
 INITIAL_NUMBER_OF_ENTITIES=1000 INITIAL_NUMBER_OF_TYPES=5 INITIAL_NUMBER_OF_RELATIONSHIPS=10 ./run.sh src/tests/query-entities-by-type-and-relationship-object.js 10 10000 15m
 ```
 
+* Query temporal evolution by type and attrs
+
+```sh
+INITIAL_NUMBER_OF_ENTITIES=10 INITIAL_NUMBER_OF_INSTANCES=100 ./run.sh src/tests/query-temporal-evolution-by-type-and-attrs.js 10 10000 15m
+```
+
 ## Delete a test
 
 In order to not pollute the DB with results of unwanted runs, it is possible to manually delete a test from the DB:
