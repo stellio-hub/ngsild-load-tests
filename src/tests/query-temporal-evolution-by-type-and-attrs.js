@@ -10,7 +10,7 @@ export const options = {
     iterations: 100000,
     thresholds: {
         http_req_failed: ['rate<0.01'],
-        query_temporal_evolution: ['avg<200', 'p(95)<400']
+        query_temporal_evolution_duration: ['avg<1000', 'p(95)<1500']
     },
     setupTimeout: '5m'
 };

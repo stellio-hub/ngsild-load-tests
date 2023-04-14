@@ -3,7 +3,7 @@ import http from 'k6/http';
 import { Trend } from 'k6/metrics';
 import { URL } from 'https://jslib.k6.io/url/1.0.0/index.js';
 
-let durationTrend = new Trend('query_temporal_evolution', true);
+let durationTrend = new Trend('query_temporal_evolution_duration', true);
 
 export function queryTemporalEvolution(type, attrs) {
     const headers = {
