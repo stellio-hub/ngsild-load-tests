@@ -1,28 +1,26 @@
 import { check, fail } from 'k6';
 import http from 'k6/http';
 import { Trend } from 'k6/metrics';
+import { URL } from 'https://jslib.k6.io/url/1.0.0/index.js';
 
 let durationTrend = new Trend('retrieve_temporal_evolution_duration', true);
 
-export function retrieveTemporalEvolutionAfterTime(entityId, afterISOTime) {
-    var queryParams = `timerel=after&time=${afterISOTime}&options=temporalValues`;
-    retrieveTemporalEvolution(entityId, queryParams);
-}
-
-export function retrieveTemporalEvolutionLastN(entityId, lastN) {
-    var queryParams = `timerel=after&time=1970-01-01T00:00:00Z&lastN=${lastN}&options=temporalValues`;
-    retrieveTemporalEvolution(entityId, queryParams);
-}
-
-function retrieveTemporalEvolution(entityId, queryParams) {
-    var httpParams = {
-        timeout: 36000000 //10min
+export function retrieveTemporalEvolution(entityId, aggregate) {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Link': '<https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
     };
+    const url = new URL(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/temporal/entities/${entityId}`);
+    url.searchParams.append('timerel', 'after');
+    url.searchParams.append('timeAt', '2023-01-01T00:00:00Z');
 
-    var response = http.get(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/temporal/entities/${entityId}?${queryParams}`, httpParams);
+    if(aggregate != null)
+        url.searchParams.append('q', aggregate);
+    var response = http.get(url.toString(), { headers });
     durationTrend.add(response.timings.duration);
-    if(!check(response, {'retrieve temporal evolution is successful': response => response.status === 200})) {
-        fail('retrieve temporal evolution failed : ' + response.body);
-    }
+
+    check(response, {
+        'retrieve temporal evolution is successful': (r) => r.status === 200
+    });
     
 }

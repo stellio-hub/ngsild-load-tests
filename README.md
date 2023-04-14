@@ -74,10 +74,22 @@ INITIAL_NUMBER_OF_ENTITIES=1000 INITIAL_NUMBER_OF_TYPES=5 ./run.sh src/tests/que
 INITIAL_NUMBER_OF_ENTITIES=1000 INITIAL_NUMBER_OF_TYPES=5 INITIAL_NUMBER_OF_RELATIONSHIPS=10 ./run.sh src/tests/query-entities-by-type-and-relationship-object.js 10 10000 15m
 ```
 
+* Retrieve temporal evolution of an entity
+
+```sh
+INITIAL_NUMBER_OF_ENTITIES=10 INITIAL_NUMBER_OF_INSTANCES=100 ./run.sh src/tests/retrieve-temporal-evolution-of-an-entity.js 10 10000 30m
+```
+
 * Query temporal evolution by type and attrs
 
 ```sh
 INITIAL_NUMBER_OF_ENTITIES=10 INITIAL_NUMBER_OF_INSTANCES=100 ./run.sh src/tests/query-temporal-evolution-by-type-and-attrs.js 10 10000 15m
+```
+
+* Retrieve temporal evolution of an entity (aggregated values)
+
+```sh
+INITIAL_NUMBER_OF_ENTITIES=10 INITIAL_NUMBER_OF_INSTANCES=100 RETRIEVE_TEMPORAL_EVOLUTION_WITH_AGGREGATE=true ./run.sh src/tests/retrieve-temporal-evolution-of-an-entity.js 10 10000 30m
 ```
 
 ## Delete a test
