@@ -27,31 +27,33 @@ const attributesFragment = new SharedArray('update attributes fragment', functio
 
 export function generateRandomAttributesFragment() {
     var now = new Date();
+    var date = now.toISOString();
+    var value = Math.random() * 100;
     const attributes = Object.assign({}, attributesFragment[0]);
 
     const updatedAmmonium1 = Object.assign({}, attributes.ammonium[0], {
-        value: (Math.random() * 100),
-        observedAt: now.toISOString()
+        value: value,
+        observedAt: date
     });
     const updatedAmmonium2 = Object.assign({}, attributes.ammonium[1], {
-        value: (Math.random() * 100),
-        observedAt: now.toISOString()
+        value: value,
+        observedAt: date
     });
     attributes.ammonium = [updatedAmmonium1, updatedAmmonium2];
 
     const updatedWaterTemperature1 = Object.assign({}, attributes.waterTemperature[0], {
-        value: (Math.random() * 100),
-        observedAt: now.toISOString()
+        value: value,
+        observedAt: date
     });
     const updatedWaterTemperature2 = Object.assign({}, attributes.waterTemperature[1], {
-        value: (Math.random() * 100),
-        observedAt: now.toISOString()
+        value: value,
+        observedAt: date
     });
     attributes.waterTemperature = [updatedWaterTemperature1, updatedWaterTemperature2];
 
     const dissolvedOxygen = Object.assign({}, attributes.dissolvedOxygen, {
-        value: (Math.random() * 100),
-        observedAt: now.toISOString()
+        value: value,
+        observedAt: date
     });
     attributes.dissolvedOxygen = dissolvedOxygen;
 
@@ -77,6 +79,5 @@ export function setup() {
 }
 
 export default function(data) {
-    const entityId = randomItem(data.createdEntitiesIds);
     queryTemporalEvolution('Entity', randomItem(observedProperties));
 }
