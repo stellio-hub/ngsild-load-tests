@@ -26,7 +26,4 @@ export function retrieveTemporalEvolution(entityId, aggregate) {
     check(response, {
         'retrieve temporal evolution is successful': (r) => r.status === 200
     });
-
-    console.log(response.body)
-    
 }
