@@ -14,13 +14,19 @@ export function retrieveTemporalEvolution(entityId, aggregate) {
     url.searchParams.append('timerel', 'after');
     url.searchParams.append('timeAt', '2023-01-01T00:00:00Z');
 
-    if(aggregate != null)
-        url.searchParams.append('q', aggregate);
+    if(aggregate != null) {
+        url.searchParams.append('aggrMethods', aggregate);
+        url.searchParams.append('aggrPeriodDuration', 'PT1S');
+        url.searchParams.append('options', 'aggregatedValues');
+    }
+
     var response = http.get(url.toString(), { headers });
     durationTrend.add(response.timings.duration);
 
     check(response, {
         'retrieve temporal evolution is successful': (r) => r.status === 200
     });
+
+    console.log(response.body)
     
 }

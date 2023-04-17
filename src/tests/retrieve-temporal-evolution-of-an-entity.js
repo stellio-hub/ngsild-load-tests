@@ -16,6 +16,7 @@ export const options = {
     setupTimeout: '5m'
 };
 
+const aggrMethods = ['totalCount', 'distinctCount', 'sum', 'avg', 'min', 'max', 'stddev', 'sumsq']
 const observedProperties = ['ammonium', 'waterTemperature', 'dissolvedOxygen'];
 const entities = new SharedArray('template entity', function () {
     return JSON.parse(open('../data/template_entity.json')).entities;
@@ -80,7 +81,7 @@ export function setup() {
 
 export default function(data) {
     if (!!__ENV.RETRIEVE_TEMPORAL_EVOLUTION_WITH_AGGREGATE) {
-        const aggregate  = `${randomItem(observedProperties)}>${randomIntBetween(0,100)}`;
+        const aggregate  = `${randomItem(aggrMethods)}`;
         retrieveTemporalEvolution(randomItem(data.createdEntitiesIds), aggregate);
     }
     else
