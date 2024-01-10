@@ -8,7 +8,7 @@ let durationTrend = new Trend('get_entities_duration', true);
 export function getEntities(types, qParams) {
     const headers = {
         'Content-Type': 'application/json',
-        'Link': '<https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
+        'Link': '<https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.7.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
     };
     const url = new URL(`http://${__ENV.STELLIO_HOSTNAME}/ngsi-ld/v1/entities`);
     url.searchParams.append('type', types);

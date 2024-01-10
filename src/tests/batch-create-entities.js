@@ -25,7 +25,7 @@ export function setup() {
         var entity = {
              id: `urn:ngsi-ld:Entity:${i}`,
              type: 'Entity',
-             '@context': ["http://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"]
+             '@context': ["http://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.7.jsonld"]
         };
 
         for(var j = 0; j < temporalPropertiesCount; j++){

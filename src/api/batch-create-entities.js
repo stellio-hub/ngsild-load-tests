@@ -5,7 +5,7 @@ import { Trend } from 'k6/metrics';
 let durationTrend = new Trend('batch_create_duration', true);
 
 export function batchCreateEntities(body) {
-    let payload = body || [{ id: "urn:ngsi-ld:Entity:01", type: "Entity", '@context': ["http://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"]}];
+    let payload = body || [{ id: "urn:ngsi-ld:Entity:01", type: "Entity", '@context': ["http://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.7.jsonld"]}];
   
     var httpParams = {
         timeout: 18000000, //5min
