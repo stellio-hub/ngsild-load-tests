@@ -10,7 +10,8 @@ export const options = {
     thresholds: {
         http_req_failed: ['rate<0.01'],
         update_attributes_duration: ['avg<250', 'p(95)<400']
-    }
+    },
+    setupTimeout: '180m'
 };
 
 const entities = new SharedArray('template entity', function () {

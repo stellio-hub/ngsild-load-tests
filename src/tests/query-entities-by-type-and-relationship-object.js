@@ -14,7 +14,7 @@ export const options = {
         http_req_failed: ['rate<0.01'],
         get_entities_duration: ['avg<1000', 'p(95)<1500']
     },
-    setupTimeout: '5m',
+    setupTimeout: '180m'
 };
 
 const observedProperties = ['ammonium', 'waterTemperature', 'dissolvedOxygen'];

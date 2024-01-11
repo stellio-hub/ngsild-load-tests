@@ -4,7 +4,6 @@ import { updateAttributes } from '../api/update-attributes.js'
 import { retrieveTemporalEvolution } from '../api/retrieve-temporal-evolution.js'
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
-import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 
 export const options = {
     vus: 10,
@@ -13,11 +12,10 @@ export const options = {
         http_req_failed: ['rate<0.01'],
         retrieve_temporal_evolution_duration: ['avg<1000', 'p(95)<1500']
     },
-    setupTimeout: '5m'
+    setupTimeout: '180m'
 };
 
 const aggrMethods = ['totalCount', 'distinctCount', 'sum', 'avg', 'min', 'max', 'stddev', 'sumsq']
-const observedProperties = ['ammonium', 'waterTemperature', 'dissolvedOxygen'];
 const entities = new SharedArray('template entity', function () {
     return JSON.parse(open('../data/template_entity.json')).entities;
 });
