@@ -5,7 +5,7 @@ import { URL } from 'https://jslib.k6.io/url/1.0.0/index.js';
 
 let durationTrend = new Trend('retrieve_temporal_evolution_duration', true);
 
-export function retrieveTemporalEvolution(entityId, aggregate) {
+export function retrieveTemporalEvolution(entityId, temporalRepresentation, aggrMethod) {
     const headers = {
         'Content-Type': 'application/json',
         'Link': '<https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.7.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
@@ -14,10 +14,12 @@ export function retrieveTemporalEvolution(entityId, aggregate) {
     url.searchParams.append('timerel', 'after');
     url.searchParams.append('timeAt', '2023-01-01T00:00:00Z');
 
-    if(aggregate != null) {
-        url.searchParams.append('aggrMethods', aggregate);
+    if (temporalRepresentation === 'aggregated') {
+        url.searchParams.append('aggrMethods', aggrMethod);
         url.searchParams.append('aggrPeriodDuration', 'PT1S');
         url.searchParams.append('options', 'aggregatedValues');
+    } else if (temporalRepresentation === 'temporal') {
+        url.searchParams.append('options', 'temporalValues');
     }
 
     var response = http.get(url.toString(), { headers });

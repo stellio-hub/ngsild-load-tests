@@ -15,6 +15,7 @@ export const options = {
     setupTimeout: '180m'
 };
 
+const aggrMethods = ['totalCount', 'distinctCount', 'sum', 'avg', 'min', 'max', 'stddev', 'sumsq']
 const observedProperties = ['ammonium', 'waterTemperature', 'dissolvedOxygen'];
 
 const entities = new SharedArray('template entity', function () {
@@ -79,5 +80,11 @@ export function setup() {
 }
 
 export default function(data) {
-    queryTemporalEvolution('Entity', randomItem(observedProperties));
+    const temporalRepresentation = __ENV.TEMPORAL_REPRESENTATION || 'normalized'
+    if (temporalRepresentation === 'aggregated') {
+        const aggrMethod  = `${randomItem(aggrMethods)}`;
+        queryTemporalEvolution('Entity', randomItem(observedProperties), temporalRepresentation, aggrMethod);
+    }
+    else
+        queryTemporalEvolution('Entity', randomItem(observedProperties, temporalRepresentation, null));
 }

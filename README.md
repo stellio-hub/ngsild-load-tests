@@ -87,16 +87,28 @@ INITIAL_NUMBER_OF_ENTITIES=1000 INITIAL_NUMBER_OF_TYPES=5 INITIAL_NUMBER_OF_RELA
 INITIAL_NUMBER_OF_ENTITIES=10 INITIAL_NUMBER_OF_INSTANCES=100 ./run.sh src/tests/retrieve-temporal-evolution-of-an-entity.js 10 10000 30m
 ```
 
+* Retrieve temporal evolution of an entity with temporal values
+
+```sh
+INITIAL_NUMBER_OF_ENTITIES=10 INITIAL_NUMBER_OF_INSTANCES=100 TEMPORAL_REPRESENTATION=temporal ./run.sh src/tests/retrieve-temporal-evolution-of-an-entity.js 10 10000 30m
+```
+
+* Retrieve temporal evolution of an entity (aggregated values)
+
+```sh
+INITIAL_NUMBER_OF_ENTITIES=10 INITIAL_NUMBER_OF_INSTANCES=100 TEMPORAL_REPRESENTATION=aggregated ./run.sh src/tests/retrieve-temporal-evolution-of-an-entity.js 10 10000 30m
+```
+
 * Query temporal evolution by type and attrs
 
 ```sh
 INITIAL_NUMBER_OF_ENTITIES=10 INITIAL_NUMBER_OF_INSTANCES=100 ./run.sh src/tests/query-temporal-evolution-by-type-and-attrs.js 10 10000 15m
 ```
 
-* Retrieve temporal evolution of an entity (aggregated values)
+* Query temporal evolution by type and attrs with temporal values
 
 ```sh
-INITIAL_NUMBER_OF_ENTITIES=10 INITIAL_NUMBER_OF_INSTANCES=100 RETRIEVE_TEMPORAL_EVOLUTION_WITH_AGGREGATE=true ./run.sh src/tests/retrieve-temporal-evolution-of-an-entity.js 10 10000 30m
+INITIAL_NUMBER_OF_ENTITIES=10 INITIAL_NUMBER_OF_INSTANCES=100 TEMPORAL_REPRESENTATION=temporal ./run.sh src/tests/query-temporal-evolution-by-type-and-attrs.js 10 10000 15m
 ```
 
 ## Delete a test

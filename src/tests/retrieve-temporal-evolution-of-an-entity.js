@@ -78,10 +78,11 @@ export function setup() {
 }
 
 export default function(data) {
-    if (!!__ENV.RETRIEVE_TEMPORAL_EVOLUTION_WITH_AGGREGATE) {
-        const aggregate  = `${randomItem(aggrMethods)}`;
-        retrieveTemporalEvolution(randomItem(data.createdEntitiesIds), aggregate);
+    const temporalRepresentation = __ENV.TEMPORAL_REPRESENTATION || 'normalized'
+    if (temporalRepresentation === 'aggregated') {
+        const aggrMethod  = `${randomItem(aggrMethods)}`;
+        retrieveTemporalEvolution(randomItem(data.createdEntitiesIds), temporalRepresentation, aggrMethod);
     }
     else
-        retrieveTemporalEvolution(randomItem(data.createdEntitiesIds), null);
+        retrieveTemporalEvolution(randomItem(data.createdEntitiesIds), temporalRepresentation, null);
 }
