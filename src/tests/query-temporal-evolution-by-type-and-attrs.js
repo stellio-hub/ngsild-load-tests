@@ -86,5 +86,5 @@ export default function(data) {
         queryTemporalEvolution('Entity', randomItem(observedProperties), temporalRepresentation, aggrMethod);
     }
     else
-        queryTemporalEvolution('Entity', randomItem(observedProperties, temporalRepresentation, null));
+        queryTemporalEvolution('Entity', randomItem(observedProperties), temporalRepresentation, null);
 }
