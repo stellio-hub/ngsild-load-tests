@@ -4,20 +4,20 @@ This project aims to provide some load tests for Stellio (or any NGSI-LD API com
 
 ## Setup
 
+* Follow instructions on https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/ to setup Go and xk6.
+
 * Build a k6 binary with dotenv and TimescaleDB extensions
 
 ```sh
-xk6 build v0.43.1 --with github.com/szkiba/xk6-dotenv --with github.com/grafana/xk6-output-timescaledb
+xk6 build latest --with github.com/szkiba/xk6-dotenv --with github.com/grafana/xk6-output-timescaledb
 ```
 
 * If you don't want to save results in TimescaleDB (and see them in a Grafana dashboard), build the k6 binary
   with the following command
 
 ```sh
-xk6 build v0.43.1 --with github.com/szkiba/xk6-dotenv
+xk6 build latest --with github.com/szkiba/xk6-dotenv
 ```
-
-Follow instructions on https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/ to setup Go and xk6.
 
 * Start docker-compose config with Timescale and Grafana if you have compiled the binary with this extension
 
