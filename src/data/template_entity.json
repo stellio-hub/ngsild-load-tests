@@ -57,6 +57,46 @@
                     "datasetId": "urn:ngsi-ld:Dataset:Surface"
                 }
             ],
+            "salinity": {
+                "type": "Property",
+                "value": 8.9,
+                "observedAt": "2023-04-01T10:00:00Z"
+            },
+            "airTemperature": {
+                "type": "Property",
+                "value": 8.9,
+                "observedAt": "2023-04-01T10:00:00Z"
+            },
+            "nitrate": {
+                "type": "Property",
+                "value": 8.9,
+                "observedAt": "2023-04-01T10:00:00Z"
+            },
+            "precipitation": {
+                "type": "Property",
+                "value": 8.9,
+                "observedAt": "2023-04-01T10:00:00Z"
+            },
+            "windDirection": {
+                "type": "Property",
+                "value": 8.9,
+                "observedAt": "2023-04-01T10:00:00Z"
+            },
+            "windSpeed": {
+                "type": "Property",
+                "value": 8.9,
+                "observedAt": "2023-04-01T10:00:00Z"
+            },
+            "norovirus": {
+                "type": "Property",
+                "value": 8.9,
+                "observedAt": "2023-04-01T10:00:00Z"
+            },
+            "conductivity": {
+                "type": "Property",
+                "value": 8.9,
+                "observedAt": "2023-04-01T10:00:00Z"
+            },
             "servesDataset": {
                 "type": "Relationship",
                 "object": "urn:ngsi-ld:Dataset:SurfaceWaterMonitoring"
@@ -70,6 +110,17 @@
                         43.48562782
                     ]
                 }
+            },
+            "address": {
+                "type": "JsonProperty",
+                "json": {
+                    "addressCountry": "FR",
+                    "addressLocality": "Nantes"
+                }
+            },
+            "dataProvider": {
+                "type": "Property",
+                "value": "My-Sensor"
             }
         }
     ]
