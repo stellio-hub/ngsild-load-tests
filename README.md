@@ -4,7 +4,7 @@ This project aims to provide some load tests for Stellio (or any NGSI-LD API com
 
 ## Setup
 
-* Follow instructions on https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/ to setup Go and xk6.
+* Follow instructions on [https://k6.io/docs/extensions/guides/build-a-k6-binary-using-go/](https://grafana.com/docs/k6/latest/extensions/run/build-k6-binary-using-go/) to setup Go and xk6.
 
 * Build a k6 binary with dotenv and TimescaleDB extensions
 
