@@ -12,7 +12,7 @@ export const options = {
         http_req_failed: ['rate<0.01'],
         query_temporal_evolution_duration: ['avg<1000', 'p(95)<1500']
     },
-    setupTimeout: '180m'
+    setupTimeout: '360m'
 };
 
 const aggrMethods = ['totalCount', 'distinctCount', 'sum', 'avg', 'min', 'max', 'stddev', 'sumsq']
