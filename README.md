@@ -73,6 +73,7 @@ Scripts supporting `SETUP_BATCH_SIZE` and `SETUP_BATCH_CONCURRENCY`:
 * `src/tests/add-attributes-temporal-entity.js`
 * `src/tests/partial-attribute-update-entities.js`
 * `src/tests/update-attributes.js`
+* `src/tests/merge-entity.js`
 * `src/tests/query-entities-by-type-and-property-value.js`
 * `src/tests/query-entities-by-type-and-relationship-object.js`
 * `src/tests/query-temporal-evolution-by-type-and-attrs.js`
@@ -96,6 +97,12 @@ INITIAL_NUMBER_OF_ENTITIES=10 ./run.sh src/tests/partial-attribute-update-entiti
 
 ```sh
 INITIAL_NUMBER_OF_ENTITIES=10 ./run.sh src/tests/update-attributes.js 10 10000 10m
+```
+
+* Merge entity
+
+```sh
+INITIAL_NUMBER_OF_ENTITIES=10 ./run.sh src/tests/merge-entity.js 10 10000 10m
 ```
 
 * Add attributes to a temporal entity
