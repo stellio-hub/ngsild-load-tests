@@ -1,6 +1,6 @@
 import { SharedArray } from 'k6/data';
-import { createEntity } from '../api/create-entity.js';
 import { updateAttributes } from '../api/update-attributes.js'
+import { createEntitiesInBatches } from '../api/batch-create-entities.js';
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 
@@ -56,14 +56,19 @@ export function generateRandomAttributesFragment() {
 }
 
 export function setup() {
+    const initialNumberOfEntities = parseInt(__ENV.INITIAL_NUMBER_OF_ENTITIES) || 10;
+    const setupBatchSize = parseInt(__ENV.SETUP_BATCH_SIZE) || 100;
+    const setupBatchConcurrency = parseInt(__ENV.SETUP_BATCH_CONCURRENCY) || 10;
+
     let createdEntitiesIds = [];
-    const initialNumberOfEntities = __ENV.INITIAL_NUMBER_OF_ENTITIES || 10
+    let entitiesToCreate = [];
     for (let i = 0; i < initialNumberOfEntities; i++) {
         const entity = Object.assign({}, entities[0]);
         entity.id = `urn:ngsi-ld:Entity:${uuidv4()}`;
-        createEntity(entity);
+        entitiesToCreate.push(entity);
         createdEntitiesIds.push(entity.id);
     }
+    createEntitiesInBatches(entitiesToCreate, setupBatchSize, setupBatchConcurrency);
 
     return { createdEntitiesIds: createdEntitiesIds };
 }

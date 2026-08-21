@@ -49,6 +49,35 @@ If needed to set a specific parameter for a script, it can be passed as an envir
 INITIAL_NUMBER_OF_ENTITIES=5 ./run.sh src/tests/partial-attribute-update-entities.js 10 10000 10m
 ```
 
+### Speeding up the setup phase
+
+k6's `setup()` hook always runs on a single VU, no matter how many VUs the script is configured
+with, so scripts that need to pre-create a lot of entities can otherwise take a very long time to
+start. To work around this, scripts whose `setup()` creates entities do so through NGSI-LD's batch
+create endpoint (`/ngsi-ld/v1/entityOperations/create`), sending several batch-create requests
+concurrently via k6's `http.batch()`. Scripts that also seed temporal history
+(`INITIAL_NUMBER_OF_INSTANCES`) apply the same concurrency to the attribute-update calls used to
+build that history.
+
+Two optional environment variables tune this:
+
+* `SETUP_BATCH_SIZE` (default `100`): number of entities sent in a single batch-create call
+* `SETUP_BATCH_CONCURRENCY` (default `10`): number of requests fired concurrently during setup
+
+```sh
+INITIAL_NUMBER_OF_ENTITIES=5000 SETUP_BATCH_SIZE=200 SETUP_BATCH_CONCURRENCY=20 ./run.sh src/tests/add-attribute-temporal-entity.js 10 10000 10m
+```
+
+Scripts supporting `SETUP_BATCH_SIZE` and `SETUP_BATCH_CONCURRENCY`:
+
+* `src/tests/add-attribute-temporal-entity.js`
+* `src/tests/partial-attribute-update-entities.js`
+* `src/tests/update-attributes.js`
+* `src/tests/query-entities-by-type-and-property-value.js`
+* `src/tests/query-entities-by-type-and-relationship-object.js`
+* `src/tests/query-temporal-evolution-by-type-and-attrs.js`
+* `src/tests/retrieve-temporal-evolution-of-an-entity.js`
+
 ## List of ready to use tests
 
 * Create entities
