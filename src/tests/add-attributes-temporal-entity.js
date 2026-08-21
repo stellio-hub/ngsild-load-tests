@@ -24,13 +24,31 @@ const attributesFragment = new SharedArray('update attributes fragment', functio
 
 export function generateRandomAttributesFragment() {
     var now = new Date();
-    const attributes = {};
+    const attributes = Object.assign({}, attributesFragment[0]);
 
-    const dissolvedOxygen = Object.assign({}, {
-        type: 'Property',
+    const updatedAmmonium1 = Object.assign({}, attributes.ammonium[0], {
         value: (Math.random() * 100),
-        observedAt: now.toISOString(),
-        unitCode: 'M1'
+        observedAt: now.toISOString()
+    });
+    const updatedAmmonium2 = Object.assign({}, attributes.ammonium[1], {
+        value: (Math.random() * 100),
+        observedAt: now.toISOString()
+    });
+    attributes.ammonium = [updatedAmmonium1, updatedAmmonium2];
+
+    const updatedWaterTemperature1 = Object.assign({}, attributes.waterTemperature[0], {
+        value: (Math.random() * 100),
+        observedAt: now.toISOString()
+    });
+    const updatedWaterTemperature2 = Object.assign({}, attributes.waterTemperature[1], {
+        value: (Math.random() * 100),
+        observedAt: now.toISOString()
+    });
+    attributes.waterTemperature = [updatedWaterTemperature1, updatedWaterTemperature2];
+
+    const dissolvedOxygen = Object.assign({}, attributes.dissolvedOxygen, {
+        value: (Math.random() * 100),
+        observedAt: now.toISOString()
     });
     attributes.dissolvedOxygen = dissolvedOxygen;
 
@@ -50,7 +68,6 @@ export function setup() {
         entitiesToCreate.push(entity);
         createdEntitiesIds.push(entity.id);
     }
-
     createEntitiesInBatches(entitiesToCreate, setupBatchSize, setupBatchConcurrency);
 
     return { createdEntitiesIds: createdEntitiesIds };
