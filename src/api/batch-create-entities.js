@@ -9,7 +9,7 @@ const httpParams = {
     timeout: 18000000, //5min
     headers: {
       'Content-Type': 'application/json',
-      'Link': '<https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.7.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
+      'Link': '<https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.9.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
     }
 };
 
